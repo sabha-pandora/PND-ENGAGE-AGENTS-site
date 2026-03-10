@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pandora | QE Agentic Architecture</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --pink: #FF93A0;
+            --pink-light: #FFB8C1;
+            --pink-dark: #E87582;
+            --pink-glow: rgba(255, 147, 160, 0.3);
+            --pink-subtle: rgba(255, 147, 160, 0.08);
+            --pink-border: rgba(255, 147, 160, 0.2);
+
+            /* Light theme */
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8F9FA;
+            --bg-card: #FFFFFF;
+            --bg-code: #F1F3F5;
+            --text-primary: #1A1A2E;
+            --text-secondary: #495057;
+            --text-muted: #868E96;
+            --border: #E9ECEF;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+            --shadow-lg: 0 4px 24px rgba(0,0,0,0.08);
+            --shadow-pink: 0 4px 24px rgba(255, 147, 160, 0.15);
+            --gradient-hero: linear-gradient(135deg, #1A1A2E 0%, #2D2D44 50%, #1A1A2E 100%);
+            --gradient-card: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+            --glass: rgba(255,255,255,1);
+            --glass-border: rgba(230,230,230,0.5);
+            --node-bg: #FFFFFF;
+            --flow-line: #DEE2E6;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0D0D1A;
+            --bg-secondary: #141428;
+            --bg-card: #1A1A2E;
+            --bg-code: #12121F;
+            --text-primary: #F1F3F5;
+            --text-secondary: #ADB5BD;
+            --text-muted: #6C757D;
+            --border: #2D2D44;
+            --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+            --shadow-lg: 0 4px 24px rgba(0,0,0,0.4);
+            --shadow-pink: 0 4px 24px rgba(255, 147, 160, 0.1);
+            --gradient-hero: linear-gradient(135deg, #0D0D1A 0%, #1A1A2E 50%, #0D0D1A 100%);
+            --gradient-card: linear-gradient(135deg, var(--bg-card), #1F1F35);
+            --glass: rgba(13, 13, 26, 1);
+            --glass-border: rgba(45, 45, 68, 0.8);
+            --node-bg: #1A1A2E;
+            --flow-line: #2D2D44;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* ===== ANIMATED BACKGROUND PARTICLES ===== */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--pink);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: float-particle linear infinite;
+        }
+
+        @keyframes float-particle {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.15; }
+            90% { opacity: 0.15; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            box-shadow: var(--shadow-pink);
+            border-color: var(--pink);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle .toggle-track {
+            width: 48px;
+            height: 26px;
+            background: var(--border);
+            border-radius: 13px;
+            position: relative;
+            transition: background 0.3s ease;
+        }
+
+        [data-theme="dark"] .theme-toggle .toggle-track {
+            background: var(--pink);
+        }
+
+        .theme-toggle .toggle-thumb {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+
+        [data-theme="dark"] .theme-toggle .toggle-thumb {
+            transform: translateX(22px);
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .nav-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-logo img {
+            height: 44px;
+            width: auto;
+        }
+
+        [data-theme="dark"] .nav-logo img {
+            filter: invert(1);
+        }
+
+        .nav-logo span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--pink);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--pink);
+            border-radius: 1px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--pink);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-hero);
+            overflow: hidden;
+            padding: 120px 32px 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 147, 160, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse-glow 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 147, 160, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse-glow 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 147, 160, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 147, 160, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: grid-move 20s linear infinite;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(255, 147, 160, 0.1);
+            border: 1px solid rgba(255, 147, 160, 0.2);
+            border-radius: 50px;
+            color: var(--pink);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-badge .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--pink);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 6vw, 72px);
+            font-weight: 900;
+            color: #FFFFFF;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--pink), var(--pink-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.6);
+            max-width: 640px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat .number {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--pink);
+            line-height: 1;
+            display: block;
+        }
+
+        .hero-stat .label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .hero-scroll .arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid var(--pink);
+            border-bottom: 2px solid var(--pink);
+            transform: rotate(45deg);
+            opacity: 0.5;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 120px 32px;
+        }
+
+        .section-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--pink);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== WHY MULTI-AGENT SECTION ===== */
+        .why-section {
+            background: var(--bg-secondary);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .comparison-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-card.negative {
+            opacity: 0.7;
+        }
+
+        .comparison-card.positive {
+            border-color: var(--pink-border);
+            box-shadow: var(--shadow-pink);
+        }
+
+        .comparison-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comparison-card .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .comparison-card.negative .icon {
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .comparison-card.positive .icon {
+            background: rgba(255, 147, 160, 0.1);
+        }
+
+        .comparison-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .comparison-card ul li {
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.5;
+        }
+
+        .comparison-card ul li .bullet {
+            flex-shrink: 0;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-top: 7px;
+        }
+
+        .comparison-card.negative ul li .bullet {
+            background: #FF6B6B;
+        }
+
+        .comparison-card.positive ul li .bullet {
+            background: var(--pink);
+        }
+
+        .vs-divider {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vs-line {
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--pink), transparent);
+        }
+
+        .vs-badge {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--pink);
+            color: white;
+            font-size: 14px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(255, 147, 160, 0.4);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .benefit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-pink);
+            border-color: var(--pink-border);
+        }
+
+        .benefit-card .benefit-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--pink-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .benefit-card h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .benefit-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== ENVIRONMENT FLOW ===== */
+        .env-flow {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 0;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .env-card {
+            flex: 1;
+            min-width: 240px;
+            max-width: 300px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px 24px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .env-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-pink);
+            border-color: var(--pink);
+        }
+
+        .env-card .env-number {
+            position: absolute;
+            top: -14px;
+            left: 24px;
+            width: 28px;
+            height: 28px;
+            background: var(--pink);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .env-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .env-card .env-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .env-card .env-tests {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .env-card .env-tests span {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: var(--pink-subtle);
+            color: var(--pink-dark);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        [data-theme="dark"] .env-card .env-tests span {
+            color: var(--pink-light);
+        }
+
+        .env-card .env-agents {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .env-card .env-agents strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .env-arrow {
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            color: var(--pink);
+            font-size: 24px;
+            font-weight: 300;
+        }
+
+        /* ===== AGENT CARDS ===== */
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .agent-card {
+            background: var(--gradient-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--pink), var(--pink-light), var(--pink));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-pink);
+            border-color: var(--pink-border);
+        }
+
+        .agent-card:hover::before {
+            opacity: 1;
+        }
+
+        .agent-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .agent-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: var(--pink-subtle);
+            border: 1px solid var(--pink-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .agent-meta {
+            flex: 1;
+        }
+
+        .agent-meta h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .agent-number {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .agent-command {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 12px;
+            background: var(--bg-code);
+            color: var(--pink);
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .agent-command .slash {
+            color: var(--pink-dark);
+            font-weight: 700;
+        }
+
+        .agent-command .terminal-arg {
+            margin-left: 4px;
+        }
+
+        .agent-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .agent-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .agent-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .agent-tag.env {
+            background: rgba(99, 179, 237, 0.1);
+            color: #63B3ED;
+        }
+
+        .agent-tag.category {
+            background: var(--pink-subtle);
+            color: var(--pink);
+        }
+
+        .agent-tag.status-built {
+            background: rgba(72, 187, 120, 0.1);
+            color: #48BB78;
+        }
+
+        .agent-tag.status-todo {
+            background: rgba(237, 137, 54, 0.1);
+            color: #ED8936;
+        }
+
+        /* ===== SKILLS TABLE ===== */
+        .skills-section {
+            background: var(--bg-secondary);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 24px;
+        }
+
+        .skill-group {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+        }
+
+        .skill-group h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skill-group h3 span {
+            font-size: 20px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 14px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .skill-item:hover {
+            background: var(--pink-subtle);
+        }
+
+        .skill-item .skill-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--pink);
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .skill-item .skill-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .skill-item .skill-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ===== COMMANDS SECTION ===== */
+        .commands-section {
+            background: var(--gradient-hero);
+            color: white;
+        }
+
+        .commands-section .section-label {
+            color: var(--pink-light);
+        }
+
+        .commands-section .section-title {
+            color: white;
+        }
+
+        .commands-section .section-subtitle {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .terminal {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #0D0D1A;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid #2D2D44;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 20px;
+            background: #141428;
+            border-bottom: 1px solid #2D2D44;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #FF5F57; }
+        .terminal-dot.yellow { background: #FFBD2E; }
+        .terminal-dot.green { background: #28CA41; }
+
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            font-size: 12px;
+            color: #6C757D;
+            font-weight: 500;
+        }
+
+        .terminal-body {
+            padding: 24px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 2;
+        }
+
+        .terminal-line {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            opacity: 0;
+            animation: terminalType 0.5s ease forwards;
+        }
+
+        .terminal-line:nth-child(1) { animation-delay: 0.3s; }
+        .terminal-line:nth-child(2) { animation-delay: 0.8s; }
+        .terminal-line:nth-child(3) { animation-delay: 1.3s; }
+        .terminal-line:nth-child(4) { animation-delay: 1.8s; }
+        .terminal-line:nth-child(5) { animation-delay: 2.3s; }
+        .terminal-line:nth-child(6) { animation-delay: 2.8s; }
+        .terminal-line:nth-child(7) { animation-delay: 3.3s; }
+        .terminal-line:nth-child(8) { animation-delay: 3.8s; }
+        .terminal-line:nth-child(9) { animation-delay: 4.3s; }
+        .terminal-line:nth-child(10) { animation-delay: 4.8s; }
+        .terminal-line:nth-child(11) { animation-delay: 5.3s; }
+        .terminal-line:nth-child(12) { animation-delay: 5.8s; }
+
+        @keyframes terminalType {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .terminal-prompt {
+            color: var(--pink);
+            margin-right: 8px;
+            font-weight: 600;
+        }
+
+        .terminal-cmd {
+            color: #FFFFFF;
+        }
+
+        .terminal-comment {
+            color: #4A5568;
+            font-style: italic;
+        }
+
+        .terminal-flag {
+            color: #63B3ED;
+        }
+
+        .terminal-arg {
+            color: #48BB78;
+        }
+
+        .command-explanation {
+            max-width: 800px;
+            margin: 48px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .cmd-explain-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .cmd-explain-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--pink-light);
+            margin-bottom: 8px;
+        }
+
+        .cmd-explain-card p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.6;
+        }
+
+        /* ===== BEST PRACTICES ===== */
+        .practices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .practice-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .practice-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-pink);
+            border-color: var(--pink-border);
+        }
+
+        .practice-number {
+            position: absolute;
+            top: -1px;
+            right: 28px;
+            font-size: 72px;
+            font-weight: 900;
+            color: var(--pink);
+            opacity: 0.15;
+            line-height: 1;
+        }
+
+        .practice-card .practice-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--pink-subtle);
+            border: 1px solid var(--pink-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .practice-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .practice-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ===== FLOW DIAGRAM ===== */
+        .flow-section {
+            background: var(--bg-secondary);
+        }
+
+        .flow-diagram {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .flow-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .flow-node {
+            background: var(--node-bg);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 24px;
+            text-align: center;
+            min-width: 160px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .flow-node:hover {
+            border-color: var(--pink);
+            box-shadow: var(--shadow-pink);
+            transform: scale(1.03);
+        }
+
+        .flow-node.highlight {
+            border-color: var(--pink);
+            background: var(--pink-subtle);
+        }
+
+        .flow-node .node-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .flow-node .node-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .flow-node .node-sub {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .flow-connector {
+            display: flex;
+            justify-content: center;
+            margin: 8px 0;
+            color: var(--pink);
+            font-size: 20px;
+        }
+
+        .flow-gate {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--pink);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 16px rgba(255, 147, 160, 0.3);
+        }
+
+        .flow-env-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--pink);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            background: var(--pink-subtle);
+            border-radius: 8px;
+            margin: 8px 0;
+            display: inline-block;
+        }
+
+        /* ===== ROADMAP ===== */
+        .roadmap-section {
+            overflow: hidden;
+        }
+
+        .roadmap {
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .roadmap::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--pink), var(--pink-light), var(--pink), transparent);
+        }
+
+        .roadmap-item {
+            position: relative;
+            padding-left: 64px;
+            padding-bottom: 40px;
+        }
+
+        .roadmap-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .roadmap-dot {
+            position: absolute;
+            left: 16px;
+            top: 4px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 3px solid var(--pink);
+            z-index: 1;
+        }
+
+        .roadmap-item.done .roadmap-dot {
+            background: var(--pink);
+            box-shadow: 0 0 0 4px var(--pink-glow);
+        }
+
+        .roadmap-item.done .roadmap-dot::after {
+            content: '\2713';
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .roadmap-phase {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--pink);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .roadmap-title {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .roadmap-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--gradient-hero);
+            padding: 60px 32px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-logo {
+            height: 48px;
+            margin-bottom: 16px;
+            filter: invert(1);
+            opacity: 0.7;
+        }
+
+        .footer p {
+            color: rgba(255,255,255,0.4);
+            font-size: 13px;
+        }
+
+        .footer .footer-pink {
+            color: var(--pink);
+            font-weight: 600;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .vs-divider { flex-direction: row; }
+            .vs-line { width: 60px; height: 2px; }
+            .env-flow { flex-direction: column; align-items: center; }
+            .env-arrow { transform: rotate(90deg); }
+            .agents-grid { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .practices-grid { grid-template-columns: 1fr; }
+            .hero-stats { flex-direction: column; gap: 24px; }
+            .flow-row { flex-direction: column; }
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Particles -->
+    <div class="bg-particles" id="particles"></div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
+        <div class="toggle-track">
+            <div class="toggle-thumb">
+                <span id="theme-icon">&#9728;</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <img src="pandora_logo_102224_rgb.webp" alt="Pandora">
+                <span>Quality Engineering Agents</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#why">Why Multi-Agent</a></li>
+                <li><a href="#environments">Environments</a></li>
+                <li><a href="#agents">Agents</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#commands">Commands</a></li>
+                <li><a href="#practices">Best Practices</a></li>
+                <li><a href="#flow">Flow</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <div class="pulse-dot"></div>
+                Agentic Quality Engineering
+            </div>
+            <h1>12 AI Agents.<br><span class="highlight">One Quality Mission.</span></h1>
+            <p>A collaborative suite of specialized AI agents covering the entire QE lifecycle &mdash; from requirement analysis to production sign-off &mdash; across every environment.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="number" data-count="12">0</span>
+                    <span class="label">AI Agents</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="number" data-count="4">0</span>
+                    <span class="label">Environments</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="number" data-count="3">0</span>
+                    <span class="label">Quality Gates</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="number" data-count="11">0</span>
+                    <span class="label">Build Phases</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="arrow"></div>
+        </div>
+    </section>
+
+    <!-- Why Multi-Agent Section -->
+    <section class="section why-section" id="why">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">Architecture Decision</div>
+                <h2 class="section-title">Why Multi-Agent with Orchestrator?</h2>
+                <p class="section-subtitle">A single monolithic agent cannot match the depth, reliability, and scalability of specialized agents working in concert.</p>
+            </div>
+
+            <div class="comparison-grid reveal">
+                <div class="comparison-card negative">
+                    <h3><div class="icon">&#10060;</div> Single Agent Approach</h3>
+                    <ul>
+                        <li><span class="bullet"></span><span>One massive prompt trying to do everything &mdash; analysis, design, automation, execution, reporting</span></li>
+                        <li><span class="bullet"></span><span>Context window overflows on complex stories with 50+ test cases</span></li>
+                        <li><span class="bullet"></span><span>No separation of concerns &mdash; a bad test design can't be caught before automation begins</span></li>
+                        <li><span class="bullet"></span><span>Sequential bottleneck &mdash; can't parallelize performance and security testing</span></li>
+                        <li><span class="bullet"></span><span>One failure mode kills the entire pipeline</span></li>
+                        <li><span class="bullet"></span><span>Impossible to tune &mdash; you optimize for one task and degrade another</span></li>
+                    </ul>
+                </div>
+
+                <div class="vs-divider">
+                    <div class="vs-line"></div>
+                    <div class="vs-badge">VS</div>
+                    <div class="vs-line"></div>
+                </div>
+
+                <div class="comparison-card positive">
+                    <h3><div class="icon">&#10004;&#65039;</div> Multi-Agent + Orchestrator</h3>
+                    <ul>
+                        <li><span class="bullet"></span><span>Each agent has a focused persona &mdash; a senior QA analyst thinks differently than an SDET</span></li>
+                        <li><span class="bullet"></span><span>Structured handoffs via JSON schemas ensure data integrity between phases</span></li>
+                        <li><span class="bullet"></span><span>Human review gates between agents &mdash; catch issues before they cascade</span></li>
+                        <li><span class="bullet"></span><span>Parallel execution &mdash; Performance and Security engineers run simultaneously</span></li>
+                        <li><span class="bullet"></span><span>Independent failure &mdash; if the Defect Reporter fails, test results are still intact</span></li>
+                        <li><span class="bullet"></span><span>Each agent can be tuned, tested, and improved independently</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="benefits-grid reveal">
+                <div class="benefit-card">
+                    <div class="benefit-icon">&#127919;</div>
+                    <h4>Depth Over Breadth</h4>
+                    <p>Each agent is a domain expert with a focused system prompt, specialized tools, and few-shot examples tuned for its specific task.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">&#128737;</div>
+                    <h4>Quality Gates</h4>
+                    <p>The Orchestrator enforces approval gates between agents. Bad analysis doesn't reach the designer. Bad code doesn't reach execution.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">&#9889;</div>
+                    <h4>Parallel Streams</h4>
+                    <p>Functional and NFR analysis run in parallel. Performance and Security engineers execute simultaneously. Maximum throughput.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">&#128176;</div>
+                    <h4>Cost Optimization</h4>
+                    <p>Route complex analysis to Opus, high-volume generation to Sonnet. Each agent uses the right model for its task. No wasted tokens.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">&#128260;</div>
+                    <h4>Feedback Loops</h4>
+                    <p>Test Monitor feeds insights back to Test Analyst. Each cycle gets smarter. A single agent has no mechanism for self-improvement across runs.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">&#128736;</div>
+                    <h4>Independent Evolution</h4>
+                    <p>Upgrade the Security Test Engineer without touching the Test Designer. Add new agents without refactoring existing ones. True modularity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Environments Section -->
+    <section class="section" id="environments">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">Multi-Environment Strategy</div>
+                <h2 class="section-title">4 Environments. Full Coverage.</h2>
+                <p class="section-subtitle">Agents operate across every environment in the promotion chain, with quality gates at each transition.</p>
+            </div>
+
+            <div class="env-flow reveal">
+                <div class="env-card">
+                    <div class="env-number">1</div>
+                    <h3>DEV</h3>
+                    <div class="env-subtitle">Developer Environment</div>
+                    <div class="env-tests">
+                        <span>Unit Tests</span>
+                    </div>
+                    <div class="env-agents"><strong>Agents:</strong> Unit Test Generator</div>
+                </div>
+                <div class="env-arrow">&#8594;</div>
+                <div class="env-card">
+                    <div class="env-number">2</div>
+                    <h3>QA</h3>
+                    <div class="env-subtitle">Quality Assurance</div>
+                    <div class="env-tests">
+                        <span>SIT</span>
+                        <span>Functional</span>
+                    </div>
+                    <div class="env-agents"><strong>Agents:</strong> Test Analyst, NFR Analyst, Test Designer, Automation Specialist, Executor, Defect Reporter, Monitor</div>
+                </div>
+                <div class="env-arrow">&#8594;</div>
+                <div class="env-card">
+                    <div class="env-number">3</div>
+                    <h3>Staging</h3>
+                    <div class="env-subtitle">Full Copy / Prod Replica</div>
+                    <div class="env-tests">
+                        <span>Regression</span>
+                        <span>E2E</span>
+                        <span>UAT</span>
+                        <span>Performance</span>
+                        <span>Security</span>
+                    </div>
+                    <div class="env-agents"><strong>Agents:</strong> Regression Manager, Perf Engineer, Security Engineer, Executor, Defect Reporter, Release Gatekeeper, Monitor</div>
+                </div>
+                <div class="env-arrow">&#8594;</div>
+                <div class="env-card">
+                    <div class="env-number">4</div>
+                    <h3>PROD</h3>
+                    <div class="env-subtitle">Production</div>
+                    <div class="env-tests">
+                        <span>Sanity</span>
+                    </div>
+                    <div class="env-agents"><strong>Agents:</strong> Test Executor (sanity), Defect Reporter, Release Gatekeeper, Monitor</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agents Section -->
+    <section class="section" id="agents" style="background: var(--bg-secondary);">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">Agent Roster</div>
+                <h2 class="section-title">Meet the 12 Agents</h2>
+                <p class="section-subtitle">Each agent is a specialist with a unique persona, toolset, and output schema, working together through the Orchestrator.</p>
+            </div>
+
+            <div class="agents-grid reveal">
+                <!-- Agent 1 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#128269;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 01</div>
+                            <h3>Test Analyst</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>analyze-ticket <span class="terminal-arg">PVA-XXXX</span></div>
+                    <p class="agent-desc">Analyzes Jira tickets for functional test scope via REST API. Produces rich ADF Confluence pages with risk assessment, traceability matrix, coverage map, ambiguity report, and test strategy context for the Test Designer.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">QA</span>
+                        <span class="agent-tag category">Analysis</span>
+                        <span class="agent-tag status-built">Built</span>
+                    </div>
+                </div>
+
+                <!-- Agent 2 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#128200;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 02</div>
+                            <h3>NFR Test Analyst</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>analyze-nfr <span class="terminal-arg">PVA-XXXX</span></div>
+                    <p class="agent-desc">Analyzes Performance and Security requirements. Produces load profiles, SLA thresholds, OWASP mappings, and security checklists for staging validation.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">QA / Staging</span>
+                        <span class="agent-tag category">Analysis</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+
+                <!-- Agent 3 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#9997;&#65039;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 03</div>
+                            <h3>Test Designer</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>design-tests <span class="terminal-arg">PVA-XXXX</span></div>
+                    <p class="agent-desc">Designs structured test cases tagged by level (SIT, Regression, E2E, UAT, Sanity). Generates BDD scenarios, test data, and edge case catalogs.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">QA</span>
+                        <span class="agent-tag category">Design</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+
+                <!-- Agent 4 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#129513;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 04</div>
+                            <h3>Unit Test Generator</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>generate-unit-tests <span class="terminal-arg">PVA-XXXX</span></div>
+                    <p class="agent-desc">Shift-left quality agent. Analyzes code changes and generates unit tests in the project's framework. Identifies coverage gaps and untested paths.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">DEV</span>
+                        <span class="agent-tag category">Shift-Left</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+
+                <!-- Agent 5 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#9881;&#65039;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 05</div>
+                            <h3>Test Automation Specialist</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>automate-tests <span class="terminal-arg">PVA-XXXX</span></div>
+                    <p class="agent-desc">Converts test designs into executable automation scripts. Generates Page Object Models, API test modules, and CI/CD pipeline configurations.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">QA</span>
+                        <span class="agent-tag category">Automation</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+
+                <!-- Agent 6 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#9654;&#65039;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 06</div>
+                            <h3>Test Executor</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>execute-tests</div>
+                    <p class="agent-desc">Environment-aware test runner. Executes SIT in QA, Regression/E2E/UAT in Staging, and Sanity in PROD. Collects results, screenshots, and logs.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">All Envs</span>
+                        <span class="agent-tag category">Execution</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+
+                <!-- Agent 7 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#128218;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 07</div>
+                            <h3>Regression Manager</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>manage-regression <span class="terminal-arg">PVA-XXXX</span></div>
+                    <p class="agent-desc">Curates the regression test suite. Performs change impact analysis, selects optimal regression scope, and prioritizes tests for staging deployment.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">Staging</span>
+                        <span class="agent-tag category">Execution</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+
+                <!-- Agent 8 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#9889;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 08</div>
+                            <h3>Performance Test Engineer</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>perf-test <span class="terminal-arg">PVA-XXXX</span></div>
+                    <p class="agent-desc">Creates performance test scripts from NFR analysis. Executes load, stress, and soak tests. Validates SLAs and identifies bottlenecks.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">Staging</span>
+                        <span class="agent-tag category">NFR Execution</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+
+                <!-- Agent 9 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#128274;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 09</div>
+                            <h3>Security Test Engineer</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>security-test <span class="terminal-arg">PVA-XXXX</span></div>
+                    <p class="agent-desc">Creates security tests from NFR analysis. Tests OWASP Top 10, auth flows, input validation, data exposure. Produces vulnerability reports.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">Staging</span>
+                        <span class="agent-tag category">NFR Execution</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+
+                <!-- Agent 10 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#128027;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 10</div>
+                            <h3>Defect Reporter</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>report-defect</div>
+                    <p class="agent-desc">Analyzes test failures across all environments. Files detailed Jira bugs with root cause hypothesis, deduplication, and environment-aware escalation.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">All Envs</span>
+                        <span class="agent-tag category">Reporting</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+
+                <!-- Agent 11 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#128682;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 11</div>
+                            <h3>Release Gatekeeper</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>release-gate</div>
+                    <p class="agent-desc">Aggregates all test results and provides evidence-based go/no-go recommendations at each environment gate. Tracks sign-offs and approvals.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">All Gates</span>
+                        <span class="agent-tag category">Governance</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+
+                <!-- Agent 12 -->
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <div class="agent-icon">&#128202;</div>
+                        <div class="agent-meta">
+                            <div class="agent-number">Agent 12</div>
+                            <h3>Test Monitor</h3>
+                        </div>
+                    </div>
+                    <div class="agent-command"><span class="slash">/</span>monitor-quality</div>
+                    <p class="agent-desc">Provides real-time quality dashboards per environment. Tracks trends, detects anomalies, and feeds insights back to Test Analyst for continuous improvement.</p>
+                    <div class="agent-tags">
+                        <span class="agent-tag env">All Envs</span>
+                        <span class="agent-tag category">Monitoring</span>
+                        <span class="agent-tag status-todo">To Build</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section skills-section" id="skills">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">Agent Capabilities</div>
+                <h2 class="section-title">Skills & Capabilities</h2>
+                <p class="section-subtitle">Each agent brings specialized skills to the quality engineering pipeline.</p>
+            </div>
+
+            <div class="skills-grid reveal">
+                <div class="skill-group">
+                    <h3><span>&#128269;</span> Test Analyst Skills</h3>
+                    <div class="skill-list">
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Requirement Parsing</strong> &mdash; Extract testable requirements from Jira REST API, Confluence docs, and Figma links</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Risk Assessment</strong> &mdash; Classify by risk with failure modes, business impact, and historical defect data</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Ambiguity Detection</strong> &mdash; Identify gaps with exact quotes, severity, and resolution suggestions posted to Jira</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Test Strategy Context</strong> &mdash; Provide key flows, integration points, test data, and suggested test levels for Test Designer</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Rich ADF Publishing</strong> &mdash; Create Confluence pages with panels, expand sections, tables, status lozenges, and layouts</div></div>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <h3><span>&#9997;&#65039;</span> Test Designer Skills</h3>
+                    <div class="skill-list">
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Equivalence Partitioning</strong> &mdash; Divide input domains into equivalent classes</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Boundary Value Analysis</strong> &mdash; Generate tests at boundaries of valid/invalid ranges</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>BDD Authoring</strong> &mdash; Write Gherkin scenarios (Given/When/Then)</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Test Data Generation</strong> &mdash; Produce diverse data including edge cases</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>State Transition Testing</strong> &mdash; Design tests for stateful workflows</div></div>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <h3><span>&#128200;</span> NFR Analyst Skills</h3>
+                    <div class="skill-list">
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Performance Scenario Design</strong> &mdash; Define load profiles from usage patterns</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>SLA Definition</strong> &mdash; Translate business requirements to measurable thresholds</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Security Threat Modeling</strong> &mdash; Identify attack vectors and risks</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>OWASP Mapping</strong> &mdash; Map features to OWASP Top 10 categories</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Architecture Analysis</strong> &mdash; Identify bottlenecks and security boundaries</div></div>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <h3><span>&#9881;&#65039;</span> Automation Skills</h3>
+                    <div class="skill-list">
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Code Generation</strong> &mdash; Playwright, Cypress, Selenium, pytest, RestAssured</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Page Object Model</strong> &mdash; Auto-generate POM from UI structure</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>API Test Generation</strong> &mdash; Build suites from OpenAPI/Swagger specs</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Self-Healing Locators</strong> &mdash; Resilient selectors with fallback strategies</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>CI/CD Integration</strong> &mdash; GitHub Actions, Jenkins pipeline configs</div></div>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <h3><span>&#9889;</span> Performance Engineer Skills</h3>
+                    <div class="skill-list">
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Script Generation</strong> &mdash; k6, JMeter, Gatling, Locust test scripts</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Load Profile Design</strong> &mdash; Ramp-up, steady state, spike, soak patterns</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Bottleneck Analysis</strong> &mdash; Identify perf bottlenecks from metrics</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>SLA Validation</strong> &mdash; Compare results against thresholds (p95, throughput, error rate)</div></div>
+                    </div>
+                </div>
+
+                <div class="skill-group">
+                    <h3><span>&#128274;</span> Security Engineer Skills</h3>
+                    <div class="skill-list">
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>OWASP Top 10 Testing</strong> &mdash; Injection, broken auth, XSS, CSRF</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Auth Testing</strong> &mdash; Session management, token handling, RBAC</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Data Exposure Detection</strong> &mdash; PII in responses, logs, error messages</div></div>
+                        <div class="skill-item"><div class="skill-dot"></div><div class="skill-text"><strong>Security Headers</strong> &mdash; CSP, CORS, HSTS, X-Frame-Options validation</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Section -->
+    <section class="section commands-section" id="commands">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">CLI Interface</div>
+                <h2 class="section-title">Slash Commands</h2>
+                <p class="section-subtitle">Every agent is invoked through a simple slash command in Claude Code. One-time API token setup, then just type and go.</p>
+            </div>
+
+            <div class="terminal reveal">
+                <div class="terminal-header">
+                    <div class="terminal-dot red"></div>
+                    <div class="terminal-dot yellow"></div>
+                    <div class="terminal-dot green"></div>
+                    <div class="terminal-title">Claude Code &mdash; QE Agents</div>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line"><span class="terminal-comment"># Functional Analysis (QA Environment)</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">&#10095;</span><span class="terminal-cmd">/analyze-ticket </span><span class="terminal-arg">PVA-1234</span></div>
+                    <div class="terminal-line"><span class="terminal-comment"># NFR Analysis (Performance + Security)</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">&#10095;</span><span class="terminal-cmd">/analyze-nfr </span><span class="terminal-arg">PVA-1234</span></div>
+                    <div class="terminal-line"><span class="terminal-comment"># Design test cases tagged by level</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">&#10095;</span><span class="terminal-cmd">/design-tests </span><span class="terminal-arg">PVA-1234</span></div>
+                    <div class="terminal-line"><span class="terminal-comment"># Generate unit tests (DEV shift-left)</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">&#10095;</span><span class="terminal-cmd">/generate-unit-tests </span><span class="terminal-arg">PVA-1234</span></div>
+                    <div class="terminal-line"><span class="terminal-comment"># Staging NFR execution</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">&#10095;</span><span class="terminal-cmd">/perf-test </span><span class="terminal-arg">PVA-1234</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">&#10095;</span><span class="terminal-cmd">/security-test </span><span class="terminal-arg">PVA-1234</span></div>
+                    <div class="terminal-line"><span class="terminal-comment"># Release decision</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">&#10095;</span><span class="terminal-cmd">/release-gate</span></div>
+                </div>
+            </div>
+
+            <div class="command-explanation reveal">
+                <div class="cmd-explain-card">
+                    <h4>How It Works</h4>
+                    <p>Each slash command maps to a Claude Code skill file (SKILL.md) containing the agent's full persona, instructions, REST API calls, and output schema.</p>
+                </div>
+                <div class="cmd-explain-card">
+                    <h4>Direct REST API</h4>
+                    <p>Agents connect to Jira &amp; Confluence via REST API with your Atlassian API token. Fast, reliable, no MCP dependency. One-time .env setup.</p>
+                </div>
+                <div class="cmd-explain-card">
+                    <h4>Jira Ticket as Input</h4>
+                    <p>Pass any PVA ticket key. The agent reads the ticket, gathers context from Jira and Confluence, and produces structured output.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Practices Section -->
+    <section class="section" id="practices">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">Design Principles</div>
+                <h2 class="section-title">Best Practices We Follow</h2>
+                <p class="section-subtitle">11 core principles that guide every design decision in our agentic architecture.</p>
+            </div>
+
+            <div class="practices-grid reveal">
+                <div class="practice-card">
+                    <div class="practice-number">01</div>
+                    <div class="practice-icon">&#128101;</div>
+                    <h3>Human-in-the-Loop</h3>
+                    <p>Agents propose, humans approve at critical gates. Autonomy increases as trust is established. No fully autonomous decisions on production releases.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">02</div>
+                    <div class="practice-icon">&#128196;</div>
+                    <h3>Structured Handoffs</h3>
+                    <p>Agents communicate via well-defined JSON schemas, not free-form text. This ensures data integrity, parseability, and reliable downstream consumption.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">03</div>
+                    <div class="practice-icon">&#128640;</div>
+                    <h3>Incremental Adoption</h3>
+                    <p>Start with Analyst + Designer (lowest risk, highest value). Add agents progressively. Each phase delivers standalone value before the next begins.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">04</div>
+                    <div class="practice-icon">&#128260;</div>
+                    <h3>Feedback Loops</h3>
+                    <p>Test Monitor feeds insights back to Test Analyst. Defect patterns inform risk assessment. Each cycle gets smarter than the last.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">05</div>
+                    <div class="practice-icon">&#128295;</div>
+                    <h3>Framework Agnostic</h3>
+                    <p>Automation agents adapt to the project's existing test framework (Playwright, Cypress, pytest) rather than imposing a new one.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">06</div>
+                    <div class="practice-icon">&#128279;</div>
+                    <h3>Full Traceability</h3>
+                    <p>Every artifact links back to the originating requirement. Every defect links to the test that found it. Complete audit trail from story to production.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">07</div>
+                    <div class="practice-icon">&#128721;</div>
+                    <h3>Fail Safe, Not Fail Silent</h3>
+                    <p>When an agent is uncertain, it flags for human review rather than guessing. Ambiguities are surfaced, never assumed away.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">08</div>
+                    <div class="practice-icon">&#128176;</div>
+                    <h3>Cost Conscious</h3>
+                    <p>Use the right model for the right task. Opus for complex analysis, Sonnet for high-volume generation. Token budgets per agent prevent runaway costs.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">09</div>
+                    <div class="practice-icon">&#127760;</div>
+                    <h3>Environment Aware</h3>
+                    <p>Every agent understands which environment it's operating in and adjusts behavior accordingly. QA bugs differ from PROD escalations.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">10</div>
+                    <div class="practice-icon">&#11013;&#65039;</div>
+                    <h3>Shift-Left Quality</h3>
+                    <p>Push quality activities earlier in the pipeline. Unit tests in DEV, test analysis at story creation. Find bugs where they're cheapest to fix.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">11</div>
+                    <div class="practice-icon">&#128737;</div>
+                    <h3>NFR as First-Class Citizens</h3>
+                    <p>Performance and Security testing have dedicated agents and formal gates. They're not afterthoughts &mdash; they're required for staging sign-off.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flow Diagram Section -->
+    <section class="section flow-section" id="flow">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">End-to-End Workflow</div>
+                <h2 class="section-title">Agent Pipeline Flow</h2>
+                <p class="section-subtitle">Two parallel analysis streams feed into environment-specific execution with quality gates at every promotion.</p>
+            </div>
+
+            <div class="flow-diagram reveal">
+                <!-- Story Input -->
+                <div class="flow-row">
+                    <div class="flow-node highlight">
+                        <div class="node-icon">&#128203;</div>
+                        <div class="node-label">Story Lands in Jira</div>
+                        <div class="node-sub">PVA-XXXX</div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <!-- Two Analysis Streams -->
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#128269;</div>
+                        <div class="node-label">Test Analyst</div>
+                        <div class="node-sub">Functional Analysis</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128200;</div>
+                        <div class="node-label">NFR Test Analyst</div>
+                        <div class="node-sub">Perf + Security Analysis</div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <!-- Design + Unit Tests -->
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#9997;&#65039;</div>
+                        <div class="node-label">Test Designer</div>
+                        <div class="node-sub">All test levels tagged</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#129513;</div>
+                        <div class="node-label">Unit Test Generator</div>
+                        <div class="node-sub">DEV environment</div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#9881;&#65039;</div>
+                        <div class="node-label">Test Automation Specialist</div>
+                        <div class="node-sub">Executable scripts</div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <!-- QA Environment -->
+                <div class="flow-row"><span class="flow-env-label">QA Environment</span></div>
+
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#9654;&#65039;</div>
+                        <div class="node-label">Test Executor</div>
+                        <div class="node-sub">SIT / Functional</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128027;</div>
+                        <div class="node-label">Defect Reporter</div>
+                        <div class="node-sub">Bug filing</div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <div class="flow-row">
+                    <span class="flow-gate">&#128682; GATE 1: QA &rarr; Staging</span>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <!-- Staging Environment -->
+                <div class="flow-row"><span class="flow-env-label">Staging / Full Copy</span></div>
+
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#128218;</div>
+                        <div class="node-label">Regression Manager</div>
+                        <div class="node-sub">Suite curation</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#9889;</div>
+                        <div class="node-label">Perf Test Engineer</div>
+                        <div class="node-sub">Load / Stress / Soak</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128274;</div>
+                        <div class="node-label">Security Test Engineer</div>
+                        <div class="node-sub">OWASP / Auth / Injection</div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#9654;&#65039;</div>
+                        <div class="node-label">Test Executor</div>
+                        <div class="node-sub">Regression / E2E / UAT</div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <div class="flow-row">
+                    <span class="flow-gate">&#128682; GATE 2: Staging &rarr; PROD</span>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <!-- PROD Environment -->
+                <div class="flow-row"><span class="flow-env-label">Production</span></div>
+
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#9654;&#65039;</div>
+                        <div class="node-label">Test Executor</div>
+                        <div class="node-sub">Sanity Tests</div>
+                    </div>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <div class="flow-row">
+                    <span class="flow-gate">&#128682; GATE 3: PROD Sanity Pass/Fail</span>
+                </div>
+
+                <div class="flow-connector">&#8595;</div>
+
+                <div class="flow-row">
+                    <div class="flow-node highlight">
+                        <div class="node-icon">&#128202;</div>
+                        <div class="node-label">Test Monitor</div>
+                        <div class="node-sub">Dashboards + Trends + Feedback Loop</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section class="section roadmap-section" id="roadmap">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">Implementation Plan</div>
+                <h2 class="section-title">Build Roadmap</h2>
+                <p class="section-subtitle">11 phases from foundation to full coverage. Each phase delivers standalone value.</p>
+            </div>
+
+            <div class="roadmap reveal">
+                <div class="roadmap-item done">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 1 &mdash; Complete</div>
+                    <div class="roadmap-title">Test Analyst</div>
+                    <div class="roadmap-desc">Foundation agent. Reads Jira tickets via REST API, analyzes requirements, creates rich ADF Confluence pages with 6-section analysis. Adds Jira comments, labels, and approval workflow.</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 2</div>
+                    <div class="roadmap-title">Test Designer</div>
+                    <div class="roadmap-desc">Generate structured test cases tagged by level (SIT, Regression, E2E, UAT, Sanity) from Test Analyst output. BDD scenarios, test data, and edge case catalogs.</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 3</div>
+                    <div class="roadmap-title">NFR Test Analyst</div>
+                    <div class="roadmap-desc">Performance + Security analysis running in parallel with functional analysis. Produces load profiles, SLA thresholds, and OWASP checklists.</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 4</div>
+                    <div class="roadmap-title">Unit Test Generator</div>
+                    <div class="roadmap-desc">Shift-left quality in DEV environment. Analyzes code changes, generates unit tests, and identifies coverage gaps.</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 5</div>
+                    <div class="roadmap-title">Test Automation Specialist</div>
+                    <div class="roadmap-desc">Converts designed test cases into executable automation scripts. Generates POM, API tests, and CI/CD configs.</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 6</div>
+                    <div class="roadmap-title">Test Executor</div>
+                    <div class="roadmap-desc">Environment-aware execution across QA (SIT), Staging (Regression/E2E/UAT), and PROD (Sanity).</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 7</div>
+                    <div class="roadmap-title">Regression Manager</div>
+                    <div class="roadmap-desc">Curates regression suite for staging. Performs change impact analysis, optimizes test selection, and prioritizes by risk.</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 8</div>
+                    <div class="roadmap-title">Performance + Security Engineers</div>
+                    <div class="roadmap-desc">Parallel build. Performance engineer creates load/stress scripts. Security engineer creates OWASP/auth test suites. Both consume NFR Analyst output.</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 9</div>
+                    <div class="roadmap-title">Defect Reporter</div>
+                    <div class="roadmap-desc">Environment-aware bug filing with root cause hypothesis, deduplication, and severity-based escalation across all environments.</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 10</div>
+                    <div class="roadmap-title">Release Gatekeeper</div>
+                    <div class="roadmap-desc">Go/no-go decisions at three gates: QA&rarr;Staging, Staging&rarr;PROD, and PROD sanity pass/fail. Evidence-based with sign-off tracking.</div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="roadmap-phase">Phase 11</div>
+                    <div class="roadmap-title">Test Monitor</div>
+                    <div class="roadmap-desc">Environment-specific dashboards, cross-env quality comparison, trend analysis, anomaly detection, and feedback loop to Test Analyst.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <img src="pandora_logo_102224_rgb.webp" alt="Pandora" class="footer-logo">
+        <p>Built with <span class="footer-pink">&#9829;</span> by the Pandora QE Team &mdash; Engage Domain</p>
+        <p style="margin-top: 8px; opacity: 0.5;">QE Agentic Architecture v2.0 &bull; 12 Agents &bull; 4 Environments &bull; 3 Quality Gates</p>
+    </footer>
+
+    <script>
+        // ===== THEME TOGGLE =====
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            document.getElementById('theme-icon').innerHTML = next === 'dark' ? '&#9790;' : '&#9728;';
+        }
+
+        // Restore saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('theme-icon').innerHTML = savedTheme === 'dark' ? '&#9790;' : '&#9728;';
+
+        // ===== BACKGROUND PARTICLES =====
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (15 + Math.random() * 25) + 's';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.width = (2 + Math.random() * 4) + 'px';
+                particle.style.height = particle.style.width;
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // ===== SCROLL REVEAL =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // ===== NUMBER COUNTER ANIMATION =====
+        function animateCounters() {
+            const counters = document.querySelectorAll('.number[data-count]');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const duration = 2000;
+                const start = performance.now();
+
+                function update(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    counter.textContent = Math.round(eased * target);
+                    if (progress < 1) requestAnimationFrame(update);
+                }
+                requestAnimationFrame(update);
+            });
+        }
+
+        // Trigger counters when hero is visible
+        const heroObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    heroObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        heroObserver.observe(document.querySelector('.hero-stats'));
+
+        // ===== SMOOTH SCROLL FOR NAV LINKS =====
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== NAV BACKGROUND ON SCROLL =====
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 50) {
+                nav.style.boxShadow = 'var(--shadow)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
