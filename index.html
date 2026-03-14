@@ -209,15 +209,17 @@
 
         .nav-links {
             display: flex;
-            gap: 32px;
+            gap: 20px;
             list-style: none;
+            flex-shrink: 0;
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--text-secondary);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
+            white-space: nowrap;
             transition: color 0.3s ease;
             position: relative;
         }
@@ -1314,6 +1316,423 @@
             line-height: 1.6;
         }
 
+        /* ===== EFFORT SAVINGS SECTION ===== */
+        .effort-savings-section {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .effort-savings-section .section-label {
+            color: var(--pink);
+        }
+
+        .effort-savings-section .section-title {
+            color: var(--text-primary);
+        }
+
+        .effort-savings-section .section-subtitle {
+            color: var(--text-muted);
+        }
+
+        /* Role Comparison Cards */
+        .savings-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 64px;
+        }
+
+        .savings-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .savings-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--pink), var(--pink-light));
+        }
+
+        .savings-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--pink-border);
+            box-shadow: var(--shadow-pink);
+        }
+
+        .savings-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: var(--pink-subtle);
+            border: 1px solid var(--pink-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .savings-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .savings-card .hours-saved {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--pink);
+            margin-bottom: 12px;
+        }
+
+        .savings-card .hours-saved span {
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .savings-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .savings-card ul li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .savings-card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--pink);
+            font-size: 11px;
+        }
+
+        .savings-card .agent-tags {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .savings-card .agent-tag {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: var(--pink-subtle);
+            color: var(--pink-dark);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Charts Container */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 32px;
+            margin-bottom: 64px;
+            align-items: start;
+        }
+
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--shadow);
+        }
+
+        .chart-container h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+
+        .chart-canvas-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .donut-center-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .donut-center-label .donut-pct {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--pink);
+            line-height: 1;
+        }
+
+        .donut-center-label .donut-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Breakdown Table */
+        .savings-table-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 64px;
+            box-shadow: var(--shadow);
+        }
+
+        .savings-table-wrapper h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            padding: 24px 32px 0;
+        }
+
+        .savings-table-scroll {
+            overflow-x: auto;
+            padding: 24px 32px 32px;
+        }
+
+        .savings-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .savings-table thead th {
+            text-align: left;
+            padding: 12px 16px;
+            font-weight: 700;
+            color: var(--pink-dark);
+            border-bottom: 2px solid var(--pink-border);
+            cursor: pointer;
+            white-space: nowrap;
+            user-select: none;
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            backdrop-filter: blur(8px);
+        }
+
+        .savings-table thead th:hover {
+            color: var(--pink);
+        }
+
+        .savings-table thead th::after {
+            content: ' ↕';
+            font-size: 10px;
+            opacity: 0.4;
+        }
+
+        .savings-table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s ease;
+        }
+
+        .savings-table tbody tr:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+
+        .savings-table tbody tr:hover {
+            background: var(--pink-subtle);
+        }
+
+        .savings-table td {
+            padding: 10px 16px;
+            color: var(--text-secondary);
+        }
+
+        .savings-table td:nth-child(n+3) {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .savings-table .saving-pct {
+            color: var(--pink);
+            font-weight: 700;
+        }
+
+        /* Annual Projection Banner */
+        .annual-banner {
+            background: linear-gradient(135deg, var(--pink-subtle), transparent);
+            border: 1px solid var(--pink-border);
+            border-radius: 20px;
+            padding: 48px;
+            text-align: center;
+            margin-bottom: 64px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .annual-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 147, 160, 0.08) 0%, transparent 60%);
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .annual-banner .banner-number {
+            font-size: 56px;
+            font-weight: 900;
+            color: var(--pink);
+            line-height: 1;
+            position: relative;
+        }
+
+        .annual-banner .banner-text {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .annual-banner .banner-subs {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .annual-banner .banner-sub-item {
+            text-align: center;
+        }
+
+        .annual-banner .banner-sub-item .sub-num {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .annual-banner .banner-sub-item .sub-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Assumptions Accordion */
+        .assumptions-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .assumptions-toggle {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            transition: background 0.2s ease;
+        }
+
+        .assumptions-toggle:hover {
+            background: var(--pink-subtle);
+        }
+
+        .assumptions-toggle .toggle-arrow {
+            font-size: 14px;
+            transition: transform 0.3s ease;
+            color: var(--pink);
+        }
+
+        .assumptions-toggle.open .toggle-arrow {
+            transform: rotate(180deg);
+        }
+
+        .assumptions-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .assumptions-content.open {
+            max-height: 600px;
+        }
+
+        .assumptions-list {
+            padding: 0 32px 32px;
+            list-style: none;
+        }
+
+        .assumptions-list li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+            line-height: 1.6;
+        }
+
+        .assumptions-list li:last-child {
+            border-bottom: none;
+        }
+
+        .assumptions-list li::before {
+            content: '⚠';
+            position: absolute;
+            left: 0;
+            font-size: 11px;
+        }
+
+        /* Responsive overrides for savings */
+        @media (max-width: 768px) {
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+            .savings-cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .annual-banner .banner-number {
+                font-size: 40px;
+            }
+            .annual-banner .banner-subs {
+                gap: 16px;
+            }
+        }
+
         /* ===== FOOTER ===== */
         .footer {
             background: var(--gradient-hero);
@@ -1398,6 +1817,7 @@
                 <li><a href="#practices">Best Practices</a></li>
                 <li><a href="#flow">Flow</a></li>
                 <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#effort-savings">Savings</a></li>
             </ul>
         </div>
     </nav>
@@ -2253,12 +2673,240 @@
         </div>
     </section>
 
+    <!-- ===== EFFORT SAVINGS SECTION ===== -->
+    <section class="section effort-savings-section" id="effort-savings">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">ROI Analysis</div>
+                <h2 class="section-title">Effort Savings: Agentic QE vs Traditional QE</h2>
+                <p class="section-subtitle">Projected effort reduction across 5 traditional QE roles when fully augmented by 12 AI agents.</p>
+            </div>
+
+            <!-- Role Comparison Cards -->
+            <div class="savings-cards-grid reveal">
+                <!-- Card 1: Functional Test Analyst -->
+                <div class="savings-card">
+                    <div class="savings-card-icon">&#128269;</div>
+                    <h3>Functional Test Analyst</h3>
+                    <div class="hours-saved">60 hrs <span>saved / sprint</span></div>
+                    <ul>
+                        <li>Requirements analysis automated</li>
+                        <li>Test case design generated in minutes</li>
+                        <li>Defect logging & triage streamlined</li>
+                    </ul>
+                    <div class="agent-tags">
+                        <span class="agent-tag">Test Analyst</span>
+                        <span class="agent-tag">Test Designer</span>
+                        <span class="agent-tag">Test Executor</span>
+                        <span class="agent-tag">Defect Reporter</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Automation Test Engineer -->
+                <div class="savings-card">
+                    <div class="savings-card-icon">&#9881;</div>
+                    <h3>Automation QE</h3>
+                    <div class="hours-saved">54 hrs <span>saved / sprint</span></div>
+                    <ul>
+                        <li>Script generation from test cases</li>
+                        <li>Framework maintenance automated</li>
+                        <li>Unit test generation from code changes</li>
+                    </ul>
+                    <div class="agent-tags">
+                        <span class="agent-tag">Test Automation Specialist</span>
+                        <span class="agent-tag">Unit Test Generator</span>
+                        <span class="agent-tag">Regression Manager</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Performance Test Engineer -->
+                <div class="savings-card">
+                    <div class="savings-card-icon">&#9889;</div>
+                    <h3>Performance Test Engineer</h3>
+                    <div class="hours-saved">38 hrs <span>saved / sprint</span></div>
+                    <ul>
+                        <li>NFR analysis & SLA extraction</li>
+                        <li>Load script creation automated</li>
+                        <li>Bottleneck analysis & reporting</li>
+                    </ul>
+                    <div class="agent-tags">
+                        <span class="agent-tag">NFR Test Analyst</span>
+                        <span class="agent-tag">Performance Test Engineer</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Security Test Engineer -->
+                <div class="savings-card">
+                    <div class="savings-card-icon">&#128274;</div>
+                    <h3>Security Test Engineer</h3>
+                    <div class="hours-saved">34 hrs <span>saved / sprint</span></div>
+                    <ul>
+                        <li>Threat modelling from requirements</li>
+                        <li>OWASP test case generation</li>
+                        <li>Vulnerability scan orchestration</li>
+                    </ul>
+                    <div class="agent-tags">
+                        <span class="agent-tag">NFR Test Analyst</span>
+                        <span class="agent-tag">Security Test Engineer</span>
+                    </div>
+                </div>
+
+                <!-- Card 5: QE Lead -->
+                <div class="savings-card">
+                    <div class="savings-card-icon">&#128202;</div>
+                    <h3>QE Lead</h3>
+                    <div class="hours-saved">34 hrs <span>saved / sprint</span></div>
+                    <ul>
+                        <li>Release readiness auto-assessed</li>
+                        <li>Quality dashboards generated</li>
+                        <li>Defect trend analysis automated</li>
+                    </ul>
+                    <div class="agent-tags">
+                        <span class="agent-tag">Release Gatekeeper</span>
+                        <span class="agent-tag">Test Monitor</span>
+                        <span class="agent-tag">Defect Reporter</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row: Bar Chart + Donut -->
+            <div class="charts-row reveal">
+                <div class="chart-container">
+                    <h3>Manual vs Agentic Effort per Sprint</h3>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="effortBarChart" height="300"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h3>Overall Effort Reduction</h3>
+                    <div class="chart-canvas-wrapper" style="position: relative;">
+                        <canvas id="effortDonutChart" height="300"></canvas>
+                        <div class="donut-center-label">
+                            <div class="donut-pct" id="donutPctLabel">0%</div>
+                            <div class="donut-sub">Blended Saving</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Effort Saving Breakdown Table -->
+            <div class="savings-table-wrapper reveal">
+                <h3>Detailed Task-Level Breakdown</h3>
+                <div class="savings-table-scroll">
+                    <table class="savings-table" id="savingsTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="string">Role</th>
+                                <th data-sort="string">Task Category</th>
+                                <th data-sort="number">Manual hrs</th>
+                                <th data-sort="number">Agentic hrs</th>
+                                <th data-sort="number">Saving %</th>
+                                <th data-sort="string">Agent Responsible</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Functional Test Analyst</td><td>Requirements analysis</td><td>8</td><td>1</td><td class="saving-pct">88%</td><td>Test Analyst</td></tr>
+                            <tr><td>Functional Test Analyst</td><td>Test case design</td><td>12</td><td>2</td><td class="saving-pct">83%</td><td>Test Designer</td></tr>
+                            <tr><td>Functional Test Analyst</td><td>Test steps & expected results</td><td>8</td><td>1</td><td class="saving-pct">88%</td><td>Test Designer</td></tr>
+                            <tr><td>Functional Test Analyst</td><td>Manual test execution</td><td>16</td><td>3</td><td class="saving-pct">81%</td><td>Test Executor</td></tr>
+                            <tr><td>Functional Test Analyst</td><td>Defect logging & triage</td><td>10</td><td>2</td><td class="saving-pct">80%</td><td>Defect Reporter</td></tr>
+                            <tr><td>Functional Test Analyst</td><td>Defect retest</td><td>6</td><td>1</td><td class="saving-pct">83%</td><td>Test Executor</td></tr>
+                            <tr><td>Functional Test Analyst</td><td>Traceability & coverage</td><td>6</td><td>1</td><td class="saving-pct">83%</td><td>Test Monitor</td></tr>
+                            <tr><td>Functional Test Analyst</td><td>Sprint test reporting</td><td>6</td><td>1</td><td class="saving-pct">83%</td><td>Test Monitor</td></tr>
+                            <tr><td>Automation QE</td><td>Script generation</td><td>16</td><td>3</td><td class="saving-pct">81%</td><td>Test Automation Specialist</td></tr>
+                            <tr><td>Automation QE</td><td>Framework maintenance</td><td>10</td><td>2</td><td class="saving-pct">80%</td><td>Test Automation Specialist</td></tr>
+                            <tr><td>Automation QE</td><td>Debug flaky tests</td><td>8</td><td>2</td><td class="saving-pct">75%</td><td>Test Automation Specialist</td></tr>
+                            <tr><td>Automation QE</td><td>CI/CD integration</td><td>6</td><td>1</td><td class="saving-pct">83%</td><td>Test Automation Specialist</td></tr>
+                            <tr><td>Automation QE</td><td>Unit test generation</td><td>10</td><td>2</td><td class="saving-pct">80%</td><td>Unit Test Generator</td></tr>
+                            <tr><td>Automation QE</td><td>Page object models</td><td>6</td><td>1</td><td class="saving-pct">83%</td><td>Test Automation Specialist</td></tr>
+                            <tr><td>Automation QE</td><td>Coverage gap analysis</td><td>6</td><td>2</td><td class="saving-pct">67%</td><td>Test Monitor</td></tr>
+                            <tr><td>Automation QE</td><td>Regression execution</td><td>6</td><td>1</td><td class="saving-pct">83%</td><td>Regression Manager</td></tr>
+                            <tr><td>Performance Test Engineer</td><td>NFR & SLA analysis</td><td>6</td><td>1</td><td class="saving-pct">83%</td><td>NFR Test Analyst</td></tr>
+                            <tr><td>Performance Test Engineer</td><td>Load/stress scenario design</td><td>8</td><td>2</td><td class="saving-pct">75%</td><td>Perf Test Engineer</td></tr>
+                            <tr><td>Performance Test Engineer</td><td>Script creation</td><td>10</td><td>2</td><td class="saving-pct">80%</td><td>Perf Test Engineer</td></tr>
+                            <tr><td>Performance Test Engineer</td><td>Test execution</td><td>8</td><td>1</td><td class="saving-pct">88%</td><td>Perf Test Engineer</td></tr>
+                            <tr><td>Performance Test Engineer</td><td>Bottleneck analysis</td><td>8</td><td>2</td><td class="saving-pct">75%</td><td>Perf Test Engineer</td></tr>
+                            <tr><td>Performance Test Engineer</td><td>Performance reporting</td><td>4</td><td>1</td><td class="saving-pct">75%</td><td>Test Monitor</td></tr>
+                            <tr><td>Performance Test Engineer</td><td>Capacity planning</td><td>4</td><td>1</td><td class="saving-pct">75%</td><td>NFR Test Analyst</td></tr>
+                            <tr><td>Security Test Engineer</td><td>Threat modelling</td><td>6</td><td>1</td><td class="saving-pct">83%</td><td>NFR Test Analyst</td></tr>
+                            <tr><td>Security Test Engineer</td><td>OWASP test design</td><td>8</td><td>2</td><td class="saving-pct">75%</td><td>Security Test Engineer</td></tr>
+                            <tr><td>Security Test Engineer</td><td>Vulnerability scanning</td><td>6</td><td>1</td><td class="saving-pct">83%</td><td>Security Test Engineer</td></tr>
+                            <tr><td>Security Test Engineer</td><td>Auth/AuthZ testing</td><td>8</td><td>2</td><td class="saving-pct">75%</td><td>Security Test Engineer</td></tr>
+                            <tr><td>Security Test Engineer</td><td>Finding classification</td><td>6</td><td>2</td><td class="saving-pct">67%</td><td>Security Test Engineer</td></tr>
+                            <tr><td>Security Test Engineer</td><td>Compliance reporting</td><td>6</td><td>1</td><td class="saving-pct">83%</td><td>Test Monitor</td></tr>
+                            <tr><td>Security Test Engineer</td><td>Remediation retest</td><td>4</td><td>1</td><td class="saving-pct">75%</td><td>Test Executor</td></tr>
+                            <tr><td>QE Lead</td><td>Sprint test planning</td><td>8</td><td>2</td><td class="saving-pct">75%</td><td>Test Analyst</td></tr>
+                            <tr><td>QE Lead</td><td>Coverage & risk analysis</td><td>8</td><td>2</td><td class="saving-pct">75%</td><td>Test Monitor</td></tr>
+                            <tr><td>QE Lead</td><td>Release readiness (go/no-go)</td><td>8</td><td>2</td><td class="saving-pct">75%</td><td>Release Gatekeeper</td></tr>
+                            <tr><td>QE Lead</td><td>Stakeholder dashboards</td><td>8</td><td>2</td><td class="saving-pct">75%</td><td>Test Monitor</td></tr>
+                            <tr><td>QE Lead</td><td>Defect trend analysis</td><td>8</td><td>2</td><td class="saving-pct">75%</td><td>Test Monitor</td></tr>
+                            <tr><td>QE Lead</td><td>Quality gate management</td><td>6</td><td>2</td><td class="saving-pct">67%</td><td>Release Gatekeeper</td></tr>
+                            <tr><td>QE Lead</td><td>Process improvement</td><td>6</td><td>6</td><td class="saving-pct">0%</td><td>Human only</td></tr>
+                            <tr><td>QE Lead</td><td>Vendor/tool coordination</td><td>4</td><td>4</td><td class="saving-pct">0%</td><td>Human only</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Annual Projection Banner -->
+            <div class="annual-banner reveal">
+                <div class="banner-number" id="annualHoursLabel">0</div>
+                <div class="banner-text">estimated engineering hours saved annually across 5 QE roles</div>
+                <div class="banner-subs">
+                    <div class="banner-sub-item">
+                        <div class="sub-num">1,560</div>
+                        <div class="sub-label">Functional Analyst</div>
+                    </div>
+                    <div class="banner-sub-item">
+                        <div class="sub-num">1,404</div>
+                        <div class="sub-label">Automation QE</div>
+                    </div>
+                    <div class="banner-sub-item">
+                        <div class="sub-num">988</div>
+                        <div class="sub-label">Performance Eng.</div>
+                    </div>
+                    <div class="banner-sub-item">
+                        <div class="sub-num">884</div>
+                        <div class="sub-label">Security Eng.</div>
+                    </div>
+                    <div class="banner-sub-item">
+                        <div class="sub-num">884</div>
+                        <div class="sub-label">QE Lead</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assumptions & Caveats Accordion -->
+            <div class="assumptions-wrapper reveal">
+                <button class="assumptions-toggle" onclick="this.classList.toggle('open'); this.nextElementSibling.classList.toggle('open');">
+                    <span>Assumptions &amp; Caveats</span>
+                    <span class="toggle-arrow">&#9660;</span>
+                </button>
+                <div class="assumptions-content">
+                    <ul class="assumptions-list">
+                        <li>Projections assume all 12 agents are fully operational. As of March 2026, 2 of 12 are built. Savings scale linearly with deployment.</li>
+                        <li>Sprint cadence: 2-week sprints, 26 sprints per year.</li>
+                        <li>Baseline assumes ~15 stories/sprint across 3 Engage squads (PVA, LOYALTY, CARE).</li>
+                        <li>Agentic hours represent human-in-the-loop time only (review, approval, exploratory testing).</li>
+                        <li>Agent effectiveness depends on well-structured Jira tickets with clear acceptance criteria. Poorly written stories may reduce savings by 10&ndash;15%.</li>
+                        <li>FTE equivalents based on 1,880 productive hours/year (47 working weeks &times; 40 hrs). These represent effort displacement, not headcount reduction.</li>
+                        <li>Exploratory testing, compliance sign-off, and ambiguous requirement resolution remain human-only activities.</li>
+                        <li>Estimates calibrated against industry benchmarks for mid-size digital product teams with comparable tooling maturity.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <img src="pandora_logo_102224_rgb.webp" alt="Pandora" class="footer-logo">
         <p>Built with <span class="footer-pink">&#9829;</span> by the Pandora QE Team &mdash; Engage Domain</p>
         <p style="margin-top: 8px; opacity: 0.5;">QE Agentic Architecture v2.0 &bull; 12 Agents &bull; 4 Environments &bull; 3 Quality Gates</p>
     </footer>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 
     <script>
         // ===== THEME TOGGLE =====
@@ -2353,6 +3001,224 @@
             } else {
                 nav.style.boxShadow = 'none';
             }
+        });
+
+        // ===== EFFORT SAVINGS CHARTS =====
+        const SAVINGS_DATA = {
+            roles: ['Functional\nTest Analyst', 'Automation QE', 'Performance\nTest Engineer', 'Security\nTest Engineer', 'QE Lead'],
+            manual: [72, 68, 48, 44, 56],
+            agentic: [12, 14, 10, 10, 22],
+            deltas: [60, 54, 38, 34, 34]
+        };
+
+        let barChartInstance = null;
+        let donutChartInstance = null;
+
+        function initEffortCharts() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(26,26,46,0.7)';
+            const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)';
+            const tooltipBg = isDark ? '#1A1A2E' : '#FFFFFF';
+            const tooltipBody = isDark ? '#fff' : '#1A1A2E';
+            const emptySlice = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+
+            // Bar Chart
+            const barCtx = document.getElementById('effortBarChart');
+            if (!barCtx) return;
+
+            if (barChartInstance) barChartInstance.destroy();
+            barChartInstance = new Chart(barCtx.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: SAVINGS_DATA.roles,
+                    datasets: [
+                        {
+                            label: 'Manual Hours / Sprint',
+                            data: SAVINGS_DATA.manual,
+                            backgroundColor: 'rgba(255, 147, 160, 0.25)',
+                            borderColor: '#FF93A0',
+                            borderWidth: 2,
+                            borderRadius: 6,
+                            barPercentage: 0.6,
+                            categoryPercentage: 0.7
+                        },
+                        {
+                            label: 'Agentic Hours / Sprint',
+                            data: SAVINGS_DATA.agentic,
+                            backgroundColor: 'rgba(255, 147, 160, 0.8)',
+                            borderColor: '#FF93A0',
+                            borderWidth: 2,
+                            borderRadius: 6,
+                            barPercentage: 0.6,
+                            categoryPercentage: 0.7
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: { duration: 1200, easing: 'easeOutQuart' },
+                    plugins: {
+                        legend: {
+                            labels: { color: textColor, font: { family: 'Inter', size: 12 }, usePointStyle: true, pointStyle: 'rectRounded' }
+                        },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            titleColor: '#FF93A0',
+                            bodyColor: tooltipBody,
+                            borderColor: 'rgba(255,147,160,0.3)',
+                            borderWidth: 1,
+                            cornerRadius: 10,
+                            callbacks: {
+                                afterBody: function(ctx) {
+                                    const idx = ctx[0].dataIndex;
+                                    return '\nDelta: -' + SAVINGS_DATA.deltas[idx] + ' hrs (' + Math.round(SAVINGS_DATA.deltas[idx] / SAVINGS_DATA.manual[idx] * 100) + '% saving)';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: textColor, font: { family: 'Inter', size: 11 }, maxRotation: 0 },
+                            grid: { display: false }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: textColor, font: { family: 'Inter', size: 11 }, callback: v => v + 'h' },
+                            grid: { color: gridColor }
+                        }
+                    }
+                },
+                plugins: [{
+                    id: 'deltaLabels',
+                    afterDatasetsDraw(chart) {
+                        const { ctx: c, data, scales: { x, y } } = chart;
+                        const meta0 = chart.getDatasetMeta(0);
+                        meta0.data.forEach((bar, i) => {
+                            const xPos = bar.x;
+                            const yPos = y.getPixelForValue(data.datasets[0].data[i]);
+                            c.save();
+                            c.fillStyle = '#FF93A0';
+                            c.font = 'bold 11px Inter';
+                            c.textAlign = 'center';
+                            c.fillText('-' + SAVINGS_DATA.deltas[i] + 'h', xPos + 15, yPos - 8);
+                            c.restore();
+                        });
+                    }
+                }]
+            });
+
+            // Donut Chart
+            const donutCtx = document.getElementById('effortDonutChart');
+            if (!donutCtx) return;
+
+            if (donutChartInstance) donutChartInstance.destroy();
+            donutChartInstance = new Chart(donutCtx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Effort Saved', 'Remaining Effort'],
+                    datasets: [{
+                        data: [76, 24],
+                        backgroundColor: ['#FF93A0', emptySlice],
+                        borderWidth: 0,
+                        circumference: 360,
+                        rotation: -90
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeOutQuart',
+                        onProgress: function(animation) {
+                            const pct = Math.round(76 * animation.currentStep / animation.numSteps);
+                            document.getElementById('donutPctLabel').textContent = pct + '%';
+                        },
+                        onComplete: function() {
+                            document.getElementById('donutPctLabel').textContent = '76%';
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            titleColor: '#FF93A0',
+                            bodyColor: tooltipBody,
+                            borderColor: 'rgba(255,147,160,0.3)',
+                            borderWidth: 1,
+                            cornerRadius: 10,
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ctx.label + ': ' + ctx.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Trigger charts on scroll into view
+        const savingsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    initEffortCharts();
+                    // Animate annual hours counter
+                    const annualEl = document.getElementById('annualHoursLabel');
+                    if (annualEl) {
+                        const target = 5720;
+                        const duration = 2000;
+                        const start = performance.now();
+                        function updateCounter(now) {
+                            const elapsed = now - start;
+                            const progress = Math.min(elapsed / duration, 1);
+                            const eased = 1 - Math.pow(1 - progress, 3);
+                            annualEl.textContent = Math.round(eased * target).toLocaleString();
+                            if (progress < 1) requestAnimationFrame(updateCounter);
+                        }
+                        requestAnimationFrame(updateCounter);
+                    }
+                    savingsObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.15 });
+
+        const savingsSection = document.getElementById('effort-savings');
+        if (savingsSection) savingsObserver.observe(savingsSection);
+
+        // Re-init charts on theme toggle to update colors
+        const origToggle = window.toggleTheme;
+        window.toggleTheme = function() {
+            origToggle();
+            if (barChartInstance || donutChartInstance) {
+                setTimeout(initEffortCharts, 100);
+            }
+        };
+
+        // ===== SORTABLE TABLE =====
+        document.querySelectorAll('#savingsTable thead th').forEach((th, colIdx) => {
+            let asc = true;
+            th.addEventListener('click', () => {
+                const tbody = document.querySelector('#savingsTable tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                const type = th.getAttribute('data-sort');
+
+                rows.sort((a, b) => {
+                    let aVal = a.children[colIdx].textContent.trim();
+                    let bVal = b.children[colIdx].textContent.trim();
+                    if (type === 'number') {
+                        aVal = parseFloat(aVal.replace('%', '')) || 0;
+                        bVal = parseFloat(bVal.replace('%', '')) || 0;
+                        return asc ? aVal - bVal : bVal - aVal;
+                    }
+                    return asc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                });
+
+                rows.forEach(row => tbody.appendChild(row));
+                asc = !asc;
+            });
         });
     </script>
 </body>
