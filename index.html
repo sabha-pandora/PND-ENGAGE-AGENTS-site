@@ -2672,7 +2672,7 @@
                             <div class="stream-step-dot">&#128679;</div>
                             <div class="stream-step-content">
                                 <div class="step-agent">Release Gatekeeper</div>
-                                <div class="step-output">3 gates: QA&rarr;Staging&rarr;PROD&rarr;Sanity</div>
+                                <div class="step-output">3 gates: QA&rarr;Staging, Staging&rarr;PROD, PROD Sanity + Rollback</div>
                             </div>
                         </div>
                         <div class="stream-arrow">&#8595;</div>
@@ -2942,7 +2942,7 @@
                         </div>
                     </div>
                     <div class="agent-command"><span class="slash">/</span>release-gate</div>
-                    <p class="agent-desc">Aggregates all test results and provides evidence-based go/no-go recommendations at each environment gate. Tracks sign-offs and approvals.</p>
+                    <p class="agent-desc">Aggregates all test results and provides evidence-based go/no-go recommendations at each environment gate. Tracks sign-offs and approvals. Triggers Rollback Plan when PROD sanity fails.</p>
                     <div class="agent-tags">
                         <span class="agent-tag env">All Gates</span>
                         <span class="agent-tag category">Governance</span>
@@ -3156,6 +3156,28 @@
                         <div class="node-icon">&#9654;&#65039;</div>
                         <div class="node-label">Test Executor</div>
                         <div class="node-sub">Sanity Tests</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row">
+                    <span class="flow-gate">&#128682; GATE 3: PROD Sanity Pass/Fail</span>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128682;</div>
+                        <div class="node-label">Release Gatekeeper</div>
+                        <div class="node-sub">Confirm Deploy / Rollback</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row">
+                    <div class="flow-node" style="border-color: #48BB78;">
+                        <div class="node-icon">&#9989;</div>
+                        <div class="node-label">PASS &rarr; Confirm</div>
+                        <div class="node-sub">Deployment verified</div>
+                    </div>
+                    <div class="flow-node" style="border-color: #FF6B6B;">
+                        <div class="node-icon">&#9888;&#65039;</div>
+                        <div class="node-label">FAIL &rarr; Rollback Plan</div>
+                        <div class="node-sub">Rollback + P1 escalation</div>
                     </div>
                 </div>
                 <div class="flow-connector">&#8595;</div>
@@ -3374,7 +3396,7 @@
                     <div class="roadmap-dot"></div>
                     <div class="roadmap-phase">Phase 10</div>
                     <div class="roadmap-title">Release Gatekeeper</div>
-                    <div class="roadmap-desc">Go/no-go decisions at three gates: QA&rarr;Staging, Staging&rarr;PROD, and PROD sanity pass/fail. Evidence-based with sign-off tracking.</div>
+                    <div class="roadmap-desc">Go/no-go decisions at three gates: QA&rarr;Staging, Staging&rarr;PROD, and PROD sanity pass/fail. Triggers Rollback Plan when sanity fails. Evidence-based with sign-off tracking.</div>
                 </div>
 
                 <div class="roadmap-item">
