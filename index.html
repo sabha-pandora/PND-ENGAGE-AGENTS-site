@@ -182,6 +182,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 32px;
         }
 
         .nav-logo {
@@ -205,6 +206,7 @@
             color: var(--pink);
             letter-spacing: 2px;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .nav-links {
@@ -1563,9 +1565,48 @@
             color: var(--text-secondary);
         }
 
-        .savings-table td:nth-child(n+3) {
-            text-align: right;
+        .savings-table td:nth-child(n+3),
+        .savings-table thead th:nth-child(n+3) {
+            text-align: center;
             font-variant-numeric: tabular-nums;
+        }
+
+        /* Role Filter Dropdown */
+        .table-filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 32px 0;
+        }
+
+        .table-filter-bar label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .role-filter-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 8px 36px 8px 14px;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23FF93A0' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        .role-filter-select:hover,
+        .role-filter-select:focus {
+            border-color: var(--pink);
+            outline: none;
         }
 
         .savings-table .saving-pct {
@@ -1717,21 +1758,365 @@
             font-size: 11px;
         }
 
-        /* Responsive overrides for savings */
-        @media (max-width: 768px) {
-            .charts-row {
-                grid-template-columns: 1fr;
-            }
-            .savings-cards-grid {
-                grid-template-columns: 1fr;
-            }
-            .annual-banner .banner-number {
-                font-size: 40px;
-            }
-            .annual-banner .banner-subs {
-                gap: 16px;
-            }
+        /* ===== ARCHITECTURE SECTION ===== */
+        .architecture-section {
+            background: var(--bg-secondary);
         }
+
+        /* Orchestrator Banner */
+        .arch-orchestrator {
+            background: var(--bg-card);
+            border: 2px solid var(--pink);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-pink);
+            position: relative;
+        }
+
+        .arch-orchestrator h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--pink);
+            margin-bottom: 6px;
+        }
+
+        .arch-orchestrator p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Connector Lines */
+        .arch-connector {
+            text-align: center;
+            padding: 8px 0;
+            color: var(--pink);
+            font-size: 20px;
+            line-height: 1;
+            opacity: 0.5;
+        }
+
+        .arch-connector-h {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 4px 0;
+            color: var(--pink);
+            opacity: 0.5;
+        }
+
+        .arch-connector-h .line {
+            flex: 1;
+            max-width: 120px;
+            height: 2px;
+            background: var(--pink);
+            border-radius: 1px;
+        }
+
+        /* Agent Grid (12 agents) */
+        .arch-agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .arch-agent-node {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .arch-agent-node:hover {
+            border-color: var(--pink);
+            box-shadow: var(--shadow-pink);
+            transform: translateY(-2px);
+        }
+
+        .arch-agent-node .agent-icon {
+            font-size: 28px;
+            margin: 0 auto 8px;
+        }
+
+        .arch-agent-node .agent-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .arch-agent-node .agent-role {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .arch-agent-node.built {
+            border-color: var(--pink-border);
+            background: var(--pink-subtle);
+        }
+
+        .arch-agent-node.built::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 10px;
+            color: var(--pink);
+            font-weight: 700;
+        }
+
+        /* Shared Artifact Store */
+        .arch-artifact-store {
+            background: var(--bg-card);
+            border: 2px dashed var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .arch-artifact-store h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .artifact-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .artifact-tag {
+            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 8px;
+            background: var(--pink-subtle);
+            color: var(--pink-dark);
+            font-weight: 600;
+            border: 1px solid var(--pink-border);
+        }
+
+        /* External Systems */
+        .arch-externals {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .arch-external-node {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .arch-external-node .ext-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .arch-external-node .ext-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .arch-external-node .ext-items {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            line-height: 1.6;
+        }
+
+        /* Two-Stream Diagram */
+        .arch-streams {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .arch-stream {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+        }
+
+        .arch-stream h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .arch-stream .stream-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .stream-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .stream-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+        }
+
+        .stream-step-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--pink-subtle);
+            border: 2px solid var(--pink-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .stream-step-content {
+            flex: 1;
+        }
+
+        .stream-step-content .step-agent {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stream-step-content .step-output {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .stream-arrow {
+            text-align: center;
+            color: var(--pink);
+            font-size: 14px;
+            opacity: 0.4;
+            padding: 2px 0 2px 10px;
+        }
+
+        /* Environment Data Flow */
+        .arch-env-flow {
+            margin-top: 48px;
+        }
+
+        .env-flow-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .env-lane {
+            display: flex;
+            align-items: stretch;
+            gap: 16px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .env-lane-label {
+            min-width: 100px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .env-lane-label.dev { background: rgba(72, 187, 120, 0.12); color: #48BB78; border: 1px solid rgba(72, 187, 120, 0.25); }
+        .env-lane-label.qa { background: rgba(66, 153, 225, 0.12); color: #4299E1; border: 1px solid rgba(66, 153, 225, 0.25); }
+        .env-lane-label.staging { background: rgba(237, 137, 54, 0.12); color: #ED8936; border: 1px solid rgba(237, 137, 54, 0.25); }
+        .env-lane-label.prod { background: rgba(255, 147, 160, 0.12); color: var(--pink); border: 1px solid var(--pink-border); }
+
+        .env-lane-agents {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex: 1;
+            align-items: center;
+        }
+
+        .env-lane-chip {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .env-lane-gate {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: rgba(255, 147, 160, 0.1);
+            border: 1px solid var(--pink-border);
+            color: var(--pink);
+            white-space: nowrap;
+        }
+
+        .env-flow-arrow {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 18px;
+            padding: 4px 0;
+            opacity: 0.4;
+        }
+
+        @media (max-width: 900px) {
+            .arch-streams { grid-template-columns: 1fr; }
+            .arch-externals { grid-template-columns: 1fr; }
+            .arch-agents-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+            .env-lane { flex-direction: column; gap: 8px; }
+            .env-lane-label { min-width: auto; }
+        }
+
+        @media (max-width: 480px) {
+            .arch-orchestrator { padding: 24px 16px; }
+            .arch-orchestrator h3 { font-size: 16px; }
+            .arch-artifact-store { padding: 24px 16px; }
+            .arch-stream { padding: 20px; }
+            .arch-agents-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .arch-agent-node { padding: 12px 8px; }
+            .arch-agent-node .agent-icon { font-size: 20px; }
+            .arch-agent-node .agent-name { font-size: 10px; }
+        }
+
+        /* Responsive overrides for savings — handled in 900px and 480px breakpoints below */
 
         /* ===== FOOTER ===== */
         .footer {
@@ -1760,8 +2145,74 @@
         }
 
         /* ===== RESPONSIVE ===== */
+        /* ===== HAMBURGER MENU ===== */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 1001;
+            background: none;
+            border: none;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
         @media (max-width: 900px) {
-            .nav-links { display: none; }
+            .hamburger { display: flex; }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: var(--glass);
+                border-bottom: 1px solid var(--border);
+                flex-direction: column;
+                gap: 0;
+                padding: 8px 0;
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+            }
+
+            .nav-links.mobile-open {
+                display: flex;
+            }
+
+            .nav-links li a {
+                display: block;
+                padding: 14px 32px;
+                font-size: 15px;
+            }
+
+            .nav-links li a:hover {
+                background: var(--pink-subtle);
+            }
+
+            .charts-row { grid-template-columns: 1fr; }
+            .savings-cards-grid { grid-template-columns: 1fr; }
+
             .comparison-grid { grid-template-columns: 1fr; }
             .vs-divider { flex-direction: row; }
             .vs-line { width: 60px; height: 2px; }
@@ -1772,6 +2223,68 @@
             .practices-grid { grid-template-columns: 1fr; }
             .hero-stats { flex-direction: column; gap: 24px; }
             .flow-row { flex-direction: column; }
+
+            .section { padding: 64px 20px; }
+            .section-header { margin-bottom: 32px; }
+            .section-subtitle { font-size: 15px; }
+
+            .hero { min-height: 80vh; padding: 100px 20px 60px; }
+            .hero h1 { font-size: clamp(28px, 8vw, 48px); margin-bottom: 16px; }
+            .hero p { font-size: 15px; }
+            .hero-stat .number { font-size: 36px; }
+            .hero-stat .label { font-size: 12px; }
+            .hero-content { max-width: 100%; padding: 0 4px; }
+
+            .terminal { border-radius: 12px; }
+            .terminal-body { padding: 16px; font-size: 11px; line-height: 1.8; overflow-x: auto; }
+            .command-explanation { grid-template-columns: 1fr; gap: 16px; margin-top: 32px; }
+
+            .practice-card { padding: 24px; }
+            .practice-number { font-size: 48px; }
+
+            .flow-node { min-width: 120px; padding: 12px 16px; }
+
+            .roadmap-item { padding-left: 32px; }
+
+            .nav-inner { padding: 0 20px; }
+            .nav-logo span { font-size: 11px; letter-spacing: 1px; }
+            .nav-logo img { height: 36px; }
+
+            .theme-toggle { top: 12px; right: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .section { padding: 48px 16px; }
+            .hero { padding: 80px 16px 48px; }
+            .hero h1 { font-size: 28px; }
+            .hero-badge { font-size: 11px; padding: 6px 14px; }
+            .hero-stats { gap: 16px; }
+            .hero-stat .number { font-size: 32px; }
+
+            .savings-card { padding: 24px; }
+            .chart-container { padding: 20px; }
+            .annual-banner { padding: 32px 20px; }
+            .annual-banner .banner-number { font-size: 32px; }
+            .annual-banner .banner-text { font-size: 15px; }
+            .annual-banner .banner-subs { gap: 12px; flex-direction: column; }
+            .annual-banner .banner-sub-item .sub-num { font-size: 20px; }
+
+            .savings-table-scroll { padding: 16px; }
+            .savings-table { font-size: 12px; }
+            .savings-table thead th { padding: 10px 10px; font-size: 11px; }
+            .savings-table td { padding: 8px 10px; }
+
+            .table-filter-bar { padding: 12px 16px 0; flex-direction: column; align-items: flex-start; gap: 8px; }
+            .role-filter-select { width: 100%; }
+
+            .assumptions-toggle { padding: 16px 20px; font-size: 14px; }
+            .assumptions-list { padding: 0 20px 20px; }
+
+            .terminal-body { font-size: 10px; padding: 12px; }
+            .cmd-explain-card { padding: 16px; }
+
+            .footer { padding: 40px 16px; }
+            .footer-logo { height: 32px; }
         }
 
         /* ===== SCROLL ANIMATIONS ===== */
@@ -1808,16 +2321,22 @@
                 <img src="pandora_logo_102224_rgb.webp" alt="Pandora">
                 <span>Quality Engineering Agents</span>
             </div>
-            <ul class="nav-links">
+            <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="mobileNav">
                 <li><a href="#why">Why Multi-Agent</a></li>
-                <li><a href="#environments">Environments</a></li>
+                <li><a href="#architecture">Architecture</a></li>
                 <li><a href="#agents">Agents</a></li>
+                <li><a href="#environments">Environments</a></li>
+                <li><a href="#flow">Flow</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#commands">Commands</a></li>
-                <li><a href="#practices">Best Practices</a></li>
-                <li><a href="#flow">Flow</a></li>
                 <li><a href="#roadmap">Roadmap</a></li>
                 <li><a href="#effort-savings">Savings</a></li>
+                <li><a href="#practices">Best Practices</a></li>
             </ul>
         </div>
     </nav>
@@ -1933,59 +2452,291 @@
         </div>
     </section>
 
-    <!-- Environments Section -->
-    <section class="section" id="environments">
+    <!-- ===== ARCHITECTURE SECTION ===== -->
+    <section class="section architecture-section" id="architecture">
         <div class="section-inner">
             <div class="section-header reveal">
-                <div class="section-label">Multi-Environment Strategy</div>
-                <h2 class="section-title">4 Environments. Full Coverage.</h2>
-                <p class="section-subtitle">Agents operate across every environment in the promotion chain, with quality gates at each transition.</p>
+                <div class="section-label">Technical Architecture</div>
+                <h2 class="section-title">System Architecture</h2>
+                <p class="section-subtitle">12 specialised agents coordinated by a central orchestrator, communicating through shared artifacts across 4 environments.</p>
             </div>
 
-            <div class="env-flow reveal">
-                <div class="env-card">
-                    <div class="env-number">1</div>
-                    <h3>DEV</h3>
-                    <div class="env-subtitle">Developer Environment</div>
-                    <div class="env-tests">
-                        <span>Unit Tests</span>
-                    </div>
-                    <div class="env-agents"><strong>Agents:</strong> Unit Test Generator</div>
+            <!-- Layer 1: Orchestrator -->
+            <div class="reveal">
+                <div class="arch-orchestrator">
+                    <h3>QE Orchestrator</h3>
+                    <p>Central brain — routes tasks, manages workflow state, handles agent handoffs, enforces quality gates &amp; human-in-the-loop approvals</p>
                 </div>
-                <div class="env-arrow">&#8594;</div>
-                <div class="env-card">
-                    <div class="env-number">2</div>
-                    <h3>QA</h3>
-                    <div class="env-subtitle">Quality Assurance</div>
-                    <div class="env-tests">
-                        <span>SIT</span>
-                        <span>Functional</span>
+
+                <div class="arch-connector">▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼</div>
+
+                <!-- Layer 2: 12 Agent Nodes -->
+                <div class="arch-agents-grid">
+                    <div class="arch-agent-node built">
+                        <div class="agent-icon">&#128269;</div>
+                        <div class="agent-name">Test Analyst</div>
+                        <div class="agent-role">Functional Analysis</div>
                     </div>
-                    <div class="env-agents"><strong>Agents:</strong> Test Analyst, NFR Analyst, Test Designer, Automation Specialist, Executor, Defect Reporter, Monitor</div>
+                    <div class="arch-agent-node">
+                        <div class="agent-icon">&#128200;</div>
+                        <div class="agent-name">NFR Test Analyst</div>
+                        <div class="agent-role">Perf + Security Analysis</div>
+                    </div>
+                    <div class="arch-agent-node built">
+                        <div class="agent-icon">&#128221;</div>
+                        <div class="agent-name">Test Designer</div>
+                        <div class="agent-role">BDD Test Cases</div>
+                    </div>
+                    <div class="arch-agent-node">
+                        <div class="agent-icon">&#129516;</div>
+                        <div class="agent-name">Unit Test Generator</div>
+                        <div class="agent-role">Shift-Left Unit Tests</div>
+                    </div>
+                    <div class="arch-agent-node">
+                        <div class="agent-icon">&#9881;</div>
+                        <div class="agent-name">Test Automation Specialist</div>
+                        <div class="agent-role">Script Generation</div>
+                    </div>
+                    <div class="arch-agent-node">
+                        <div class="agent-icon">&#9654;</div>
+                        <div class="agent-name">Test Executor</div>
+                        <div class="agent-role">Run All Environments</div>
+                    </div>
+                    <div class="arch-agent-node">
+                        <div class="agent-icon">&#128736;</div>
+                        <div class="agent-name">Regression Manager</div>
+                        <div class="agent-role">Suite Curation</div>
+                    </div>
+                    <div class="arch-agent-node">
+                        <div class="agent-icon">&#9889;</div>
+                        <div class="agent-name">Perf Test Engineer</div>
+                        <div class="agent-role">Load &amp; Stress Scripts</div>
+                    </div>
+                    <div class="arch-agent-node">
+                        <div class="agent-icon">&#128274;</div>
+                        <div class="agent-name">Security Test Engineer</div>
+                        <div class="agent-role">OWASP &amp; Vuln Scans</div>
+                    </div>
+                    <div class="arch-agent-node">
+                        <div class="agent-icon">&#128027;</div>
+                        <div class="agent-name">Defect Reporter</div>
+                        <div class="agent-role">Bug Filing All Envs</div>
+                    </div>
+                    <div class="arch-agent-node">
+                        <div class="agent-icon">&#128679;</div>
+                        <div class="agent-name">Release Gatekeeper</div>
+                        <div class="agent-role">Go / No-Go Decisions</div>
+                    </div>
+                    <div class="arch-agent-node">
+                        <div class="agent-icon">&#128202;</div>
+                        <div class="agent-name">Test Monitor</div>
+                        <div class="agent-role">Dashboards &amp; Trends</div>
+                    </div>
                 </div>
-                <div class="env-arrow">&#8594;</div>
-                <div class="env-card">
-                    <div class="env-number">3</div>
-                    <h3>Staging</h3>
-                    <div class="env-subtitle">Full Copy / Prod Replica</div>
-                    <div class="env-tests">
-                        <span>Regression</span>
-                        <span>E2E</span>
-                        <span>UAT</span>
-                        <span>Performance</span>
-                        <span>Security</span>
+
+                <div class="arch-connector">▼ ▼ ▼</div>
+
+                <!-- Layer 3: Shared Artifact Store -->
+                <div class="arch-artifact-store">
+                    <h3>Shared Artifact Store (Knowledge Base)</h3>
+                    <div class="artifact-tags">
+                        <span class="artifact-tag">Test Scope Docs</span>
+                        <span class="artifact-tag">NFR Analysis</span>
+                        <span class="artifact-tag">Structured Test Cases</span>
+                        <span class="artifact-tag">Unit Tests</span>
+                        <span class="artifact-tag">Automation Scripts</span>
+                        <span class="artifact-tag">Performance Scripts</span>
+                        <span class="artifact-tag">Security Test Cases</span>
+                        <span class="artifact-tag">Execution Reports</span>
+                        <span class="artifact-tag">Defect Records</span>
+                        <span class="artifact-tag">Quality Metrics</span>
+                        <span class="artifact-tag">Release Gate Reports</span>
+                        <span class="artifact-tag">Traceability Matrices</span>
                     </div>
-                    <div class="env-agents"><strong>Agents:</strong> Regression Manager, Perf Engineer, Security Engineer, Executor, Defect Reporter, Release Gatekeeper, Monitor</div>
                 </div>
-                <div class="env-arrow">&#8594;</div>
-                <div class="env-card">
-                    <div class="env-number">4</div>
-                    <h3>PROD</h3>
-                    <div class="env-subtitle">Production</div>
-                    <div class="env-tests">
-                        <span>Sanity</span>
+
+                <div class="arch-connector">▼ ▼ ▼</div>
+
+                <!-- Layer 4: External Systems -->
+                <div class="arch-externals">
+                    <div class="arch-external-node">
+                        <div class="ext-icon">&#127899;</div>
+                        <div class="ext-name">Jira</div>
+                        <div class="ext-items">Tickets &bull; Defects &bull; Tests</div>
                     </div>
-                    <div class="env-agents"><strong>Agents:</strong> Test Executor (sanity), Defect Reporter, Release Gatekeeper, Monitor</div>
+                    <div class="arch-external-node">
+                        <div class="ext-icon">&#128214;</div>
+                        <div class="ext-name">Confluence</div>
+                        <div class="ext-items">Specs &bull; Plans &bull; Reports</div>
+                    </div>
+                    <div class="arch-external-node">
+                        <div class="ext-icon">&#128187;</div>
+                        <div class="ext-name">Git / CI-CD</div>
+                        <div class="ext-items">Code &bull; Pipelines &bull; Artifacts</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Analysis Streams -->
+            <div class="arch-streams reveal">
+                <div class="arch-stream">
+                    <h4>Functional Stream</h4>
+                    <div class="stream-sub">Story-driven test design &amp; execution</div>
+                    <div class="stream-flow">
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#128269;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Test Analyst</div>
+                                <div class="step-output">Functional analysis &amp; scope</div>
+                            </div>
+                        </div>
+                        <div class="stream-arrow">&#8595;</div>
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#128221;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Test Designer</div>
+                                <div class="step-output">BDD test cases (SIT, Regression, E2E, UAT)</div>
+                            </div>
+                        </div>
+                        <div class="stream-arrow">&#8595;</div>
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#9881;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Test Automation Specialist</div>
+                                <div class="step-output">Executable scripts &amp; POM</div>
+                            </div>
+                        </div>
+                        <div class="stream-arrow">&#8595;</div>
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#9654;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Test Executor (QA)</div>
+                                <div class="step-output">SIT execution &amp; results</div>
+                            </div>
+                        </div>
+                        <div class="stream-arrow">&#8595;</div>
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#128736;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Regression Manager</div>
+                                <div class="step-output">Curated suite for staging</div>
+                            </div>
+                        </div>
+                        <div class="stream-arrow">&#8595;</div>
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#9654;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Test Executor (Staging)</div>
+                                <div class="step-output">Regression, E2E &amp; UAT</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-stream">
+                    <h4>NFR Stream</h4>
+                    <div class="stream-sub">Performance &amp; security analysis &amp; execution</div>
+                    <div class="stream-flow">
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#128200;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">NFR Test Analyst</div>
+                                <div class="step-output">Load profiles, SLAs &amp; threat models</div>
+                            </div>
+                        </div>
+                        <div class="stream-arrow">&#8595; &#8595;</div>
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#9889;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Perf Test Engineer</div>
+                                <div class="step-output">Load/stress scripts &amp; execution</div>
+                            </div>
+                        </div>
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#128274;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Security Test Engineer</div>
+                                <div class="step-output">OWASP tests &amp; vuln scans</div>
+                            </div>
+                        </div>
+                        <div class="stream-arrow">&#8595;</div>
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#128027;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Defect Reporter</div>
+                                <div class="step-output">Bugs with root cause hypothesis</div>
+                            </div>
+                        </div>
+                        <div class="stream-arrow">&#8595;</div>
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#128679;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Release Gatekeeper</div>
+                                <div class="step-output">3 gates: QA&rarr;Staging&rarr;PROD&rarr;Sanity</div>
+                            </div>
+                        </div>
+                        <div class="stream-arrow">&#8595;</div>
+                        <div class="stream-step">
+                            <div class="stream-step-dot">&#128202;</div>
+                            <div class="stream-step-content">
+                                <div class="step-agent">Test Monitor</div>
+                                <div class="step-output">Dashboards, trends &amp; feedback loop</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Environment Data Flow -->
+            <div class="arch-env-flow reveal">
+                <div class="env-flow-title">Agent Deployment Across Environments</div>
+
+                <div class="env-lane">
+                    <div class="env-lane-label dev">DEV</div>
+                    <div class="env-lane-agents">
+                        <span class="env-lane-chip">Unit Test Generator</span>
+                    </div>
+                </div>
+
+                <div class="env-flow-arrow">&#8595;</div>
+
+                <div class="env-lane">
+                    <div class="env-lane-label qa">QA</div>
+                    <div class="env-lane-agents">
+                        <span class="env-lane-chip">Test Analyst</span>
+                        <span class="env-lane-chip">NFR Test Analyst</span>
+                        <span class="env-lane-chip">Test Designer</span>
+                        <span class="env-lane-chip">Test Automation</span>
+                        <span class="env-lane-chip">Test Executor (SIT)</span>
+                        <span class="env-lane-chip">Defect Reporter</span>
+                        <span class="env-lane-gate">Gate 1: QA &rarr; Staging</span>
+                    </div>
+                </div>
+
+                <div class="env-flow-arrow">&#8595;</div>
+
+                <div class="env-lane">
+                    <div class="env-lane-label staging">Staging</div>
+                    <div class="env-lane-agents">
+                        <span class="env-lane-chip">Regression Manager</span>
+                        <span class="env-lane-chip">Test Executor (Reg/E2E/UAT)</span>
+                        <span class="env-lane-chip">Perf Test Engineer</span>
+                        <span class="env-lane-chip">Security Test Engineer</span>
+                        <span class="env-lane-chip">Defect Reporter</span>
+                        <span class="env-lane-gate">Gate 2: Staging &rarr; PROD</span>
+                    </div>
+                </div>
+
+                <div class="env-flow-arrow">&#8595;</div>
+
+                <div class="env-lane">
+                    <div class="env-lane-label prod">PROD</div>
+                    <div class="env-lane-agents">
+                        <span class="env-lane-chip">Test Executor (Sanity)</span>
+                        <span class="env-lane-chip">Defect Reporter (P1)</span>
+                        <span class="env-lane-chip">Test Monitor</span>
+                        <span class="env-lane-gate">Gate 3: Sanity Pass/Fail</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2220,6 +2971,205 @@
         </div>
     </section>
 
+    <!-- Environments Section -->
+    <section class="section" id="environments">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">Multi-Environment Strategy</div>
+                <h2 class="section-title">4 Environments. Full Coverage.</h2>
+                <p class="section-subtitle">Agents operate across every environment in the promotion chain, with quality gates at each transition.</p>
+            </div>
+
+            <div class="env-flow reveal">
+                <div class="env-card">
+                    <div class="env-number">1</div>
+                    <h3>DEV</h3>
+                    <div class="env-subtitle">Developer Environment</div>
+                    <div class="env-tests">
+                        <span>Unit Tests</span>
+                    </div>
+                    <div class="env-agents"><strong>Agents:</strong> Unit Test Generator</div>
+                </div>
+                <div class="env-arrow">&#8594;</div>
+                <div class="env-card">
+                    <div class="env-number">2</div>
+                    <h3>QA</h3>
+                    <div class="env-subtitle">Quality Assurance</div>
+                    <div class="env-tests">
+                        <span>SIT</span>
+                        <span>Functional</span>
+                    </div>
+                    <div class="env-agents"><strong>Agents:</strong> Test Analyst, NFR Analyst, Test Designer, Automation Specialist, Executor, Defect Reporter, Monitor</div>
+                </div>
+                <div class="env-arrow">&#8594;</div>
+                <div class="env-card">
+                    <div class="env-number">3</div>
+                    <h3>Staging</h3>
+                    <div class="env-subtitle">Full Copy / Prod Replica</div>
+                    <div class="env-tests">
+                        <span>Regression</span>
+                        <span>E2E</span>
+                        <span>UAT</span>
+                        <span>Performance</span>
+                        <span>Security</span>
+                    </div>
+                    <div class="env-agents"><strong>Agents:</strong> Regression Manager, Perf Engineer, Security Engineer, Executor, Defect Reporter, Release Gatekeeper, Monitor</div>
+                </div>
+                <div class="env-arrow">&#8594;</div>
+                <div class="env-card">
+                    <div class="env-number">4</div>
+                    <h3>PROD</h3>
+                    <div class="env-subtitle">Production</div>
+                    <div class="env-tests">
+                        <span>Sanity</span>
+                    </div>
+                    <div class="env-agents"><strong>Agents:</strong> Test Executor (sanity), Defect Reporter, Release Gatekeeper, Monitor</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flow Diagram Section -->
+    <section class="section flow-section" id="flow">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">End-to-End Workflow</div>
+                <h2 class="section-title">Agent Pipeline Flow</h2>
+                <p class="section-subtitle">Two parallel analysis streams feed into environment-specific execution with quality gates at every promotion.</p>
+            </div>
+
+            <div class="flow-diagram reveal">
+                <div class="flow-row">
+                    <div class="flow-node highlight">
+                        <div class="node-icon">&#128203;</div>
+                        <div class="node-label">Story Lands in Jira</div>
+                        <div class="node-sub">PVA-XXXX</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#128269;</div>
+                        <div class="node-label">Test Analyst</div>
+                        <div class="node-sub">Functional Analysis</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128200;</div>
+                        <div class="node-label">NFR Test Analyst</div>
+                        <div class="node-sub">Perf + Security Analysis</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#9997;&#65039;</div>
+                        <div class="node-label">Test Designer</div>
+                        <div class="node-sub">All test levels tagged</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#129513;</div>
+                        <div class="node-label">Unit Test Generator</div>
+                        <div class="node-sub">DEV environment</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#9881;&#65039;</div>
+                        <div class="node-label">Test Automation Specialist</div>
+                        <div class="node-sub">Executable scripts</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row"><span class="flow-env-label">QA Environment</span></div>
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#9654;&#65039;</div>
+                        <div class="node-label">Test Executor</div>
+                        <div class="node-sub">SIT / Functional</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128027;</div>
+                        <div class="node-label">Defect Reporter</div>
+                        <div class="node-sub">Bug filing</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128202;</div>
+                        <div class="node-label">Test Monitor</div>
+                        <div class="node-sub">QA Dashboards</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row">
+                    <span class="flow-gate">&#128682; GATE 1: QA &rarr; Staging</span>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128682;</div>
+                        <div class="node-label">Release Gatekeeper</div>
+                        <div class="node-sub">Go / No-Go</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row"><span class="flow-env-label">Staging / Full Copy</span></div>
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#128218;</div>
+                        <div class="node-label">Regression Manager</div>
+                        <div class="node-sub">Suite curation</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#9889;</div>
+                        <div class="node-label">Perf Test Engineer</div>
+                        <div class="node-sub">Load / Stress / Soak</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128274;</div>
+                        <div class="node-label">Security Test Engineer</div>
+                        <div class="node-sub">OWASP / Auth / Injection</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#9654;&#65039;</div>
+                        <div class="node-label">Test Executor</div>
+                        <div class="node-sub">Regression / E2E / UAT</div>
+                    </div>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128202;</div>
+                        <div class="node-label">Test Monitor</div>
+                        <div class="node-sub">Staging Dashboards</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row">
+                    <span class="flow-gate">&#128682; GATE 2: Staging &rarr; PROD</span>
+                    <div class="flow-node">
+                        <div class="node-icon">&#128682;</div>
+                        <div class="node-label">Release Gatekeeper</div>
+                        <div class="node-sub">Go / No-Go</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row"><span class="flow-env-label">Production</span></div>
+                <div class="flow-row">
+                    <div class="flow-node">
+                        <div class="node-icon">&#9654;&#65039;</div>
+                        <div class="node-label">Test Executor</div>
+                        <div class="node-sub">Sanity Tests</div>
+                    </div>
+                </div>
+                <div class="flow-connector">&#8595;</div>
+                <div class="flow-row">
+                    <div class="flow-node highlight">
+                        <div class="node-icon">&#128202;</div>
+                        <div class="node-label">Test Monitor</div>
+                        <div class="node-sub">Dashboards + Trends + Feedback Loop</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Skills Section -->
     <section class="section skills-section" id="skills">
         <div class="section-inner">
@@ -2347,242 +3297,6 @@
         </div>
     </section>
 
-    <!-- Best Practices Section -->
-    <section class="section" id="practices">
-        <div class="section-inner">
-            <div class="section-header reveal">
-                <div class="section-label">Design Principles</div>
-                <h2 class="section-title">Best Practices We Follow</h2>
-                <p class="section-subtitle">11 core principles that guide every design decision in our agentic architecture.</p>
-            </div>
-
-            <div class="practices-grid reveal">
-                <div class="practice-card">
-                    <div class="practice-number">01</div>
-                    <div class="practice-icon">&#128101;</div>
-                    <h3>Human-in-the-Loop</h3>
-                    <p>Agents propose, humans approve at critical gates. Autonomy increases as trust is established. No fully autonomous decisions on production releases.</p>
-                </div>
-                <div class="practice-card">
-                    <div class="practice-number">02</div>
-                    <div class="practice-icon">&#128196;</div>
-                    <h3>Structured Handoffs</h3>
-                    <p>Agents communicate via well-defined JSON schemas, not free-form text. This ensures data integrity, parseability, and reliable downstream consumption.</p>
-                </div>
-                <div class="practice-card">
-                    <div class="practice-number">03</div>
-                    <div class="practice-icon">&#128640;</div>
-                    <h3>Incremental Adoption</h3>
-                    <p>Start with Analyst + Designer (lowest risk, highest value). Add agents progressively. Each phase delivers standalone value before the next begins.</p>
-                </div>
-                <div class="practice-card">
-                    <div class="practice-number">04</div>
-                    <div class="practice-icon">&#128260;</div>
-                    <h3>Feedback Loops</h3>
-                    <p>Test Monitor feeds insights back to Test Analyst. Defect patterns inform risk assessment. Each cycle gets smarter than the last.</p>
-                </div>
-                <div class="practice-card">
-                    <div class="practice-number">05</div>
-                    <div class="practice-icon">&#128295;</div>
-                    <h3>Framework Agnostic</h3>
-                    <p>Automation agents adapt to the project's existing test framework (Playwright, Cypress, pytest) rather than imposing a new one.</p>
-                </div>
-                <div class="practice-card">
-                    <div class="practice-number">06</div>
-                    <div class="practice-icon">&#128279;</div>
-                    <h3>Full Traceability</h3>
-                    <p>Every artifact links back to the originating requirement. Every defect links to the test that found it. Complete audit trail from story to production.</p>
-                </div>
-                <div class="practice-card">
-                    <div class="practice-number">07</div>
-                    <div class="practice-icon">&#128721;</div>
-                    <h3>Fail Safe, Not Fail Silent</h3>
-                    <p>When an agent is uncertain, it flags for human review rather than guessing. Ambiguities are surfaced, never assumed away.</p>
-                </div>
-                <div class="practice-card">
-                    <div class="practice-number">08</div>
-                    <div class="practice-icon">&#128176;</div>
-                    <h3>Cost Conscious</h3>
-                    <p>Use the right model for the right task. Opus for complex analysis, Sonnet for high-volume generation. Token budgets per agent prevent runaway costs.</p>
-                </div>
-                <div class="practice-card">
-                    <div class="practice-number">09</div>
-                    <div class="practice-icon">&#127760;</div>
-                    <h3>Environment Aware</h3>
-                    <p>Every agent understands which environment it's operating in and adjusts behavior accordingly. QA bugs differ from PROD escalations.</p>
-                </div>
-                <div class="practice-card">
-                    <div class="practice-number">10</div>
-                    <div class="practice-icon">&#11013;&#65039;</div>
-                    <h3>Shift-Left Quality</h3>
-                    <p>Push quality activities earlier in the pipeline. Unit tests in DEV, test analysis at story creation. Find bugs where they're cheapest to fix.</p>
-                </div>
-                <div class="practice-card">
-                    <div class="practice-number">11</div>
-                    <div class="practice-icon">&#128737;</div>
-                    <h3>NFR as First-Class Citizens</h3>
-                    <p>Performance and Security testing have dedicated agents and formal gates. They're not afterthoughts &mdash; they're required for staging sign-off.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Flow Diagram Section -->
-    <section class="section flow-section" id="flow">
-        <div class="section-inner">
-            <div class="section-header reveal">
-                <div class="section-label">End-to-End Workflow</div>
-                <h2 class="section-title">Agent Pipeline Flow</h2>
-                <p class="section-subtitle">Two parallel analysis streams feed into environment-specific execution with quality gates at every promotion.</p>
-            </div>
-
-            <div class="flow-diagram reveal">
-                <!-- Story Input -->
-                <div class="flow-row">
-                    <div class="flow-node highlight">
-                        <div class="node-icon">&#128203;</div>
-                        <div class="node-label">Story Lands in Jira</div>
-                        <div class="node-sub">PVA-XXXX</div>
-                    </div>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <!-- Two Analysis Streams -->
-                <div class="flow-row">
-                    <div class="flow-node">
-                        <div class="node-icon">&#128269;</div>
-                        <div class="node-label">Test Analyst</div>
-                        <div class="node-sub">Functional Analysis</div>
-                    </div>
-                    <div class="flow-node">
-                        <div class="node-icon">&#128200;</div>
-                        <div class="node-label">NFR Test Analyst</div>
-                        <div class="node-sub">Perf + Security Analysis</div>
-                    </div>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <!-- Design + Unit Tests -->
-                <div class="flow-row">
-                    <div class="flow-node">
-                        <div class="node-icon">&#9997;&#65039;</div>
-                        <div class="node-label">Test Designer</div>
-                        <div class="node-sub">All test levels tagged</div>
-                    </div>
-                    <div class="flow-node">
-                        <div class="node-icon">&#129513;</div>
-                        <div class="node-label">Unit Test Generator</div>
-                        <div class="node-sub">DEV environment</div>
-                    </div>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <div class="flow-row">
-                    <div class="flow-node">
-                        <div class="node-icon">&#9881;&#65039;</div>
-                        <div class="node-label">Test Automation Specialist</div>
-                        <div class="node-sub">Executable scripts</div>
-                    </div>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <!-- QA Environment -->
-                <div class="flow-row"><span class="flow-env-label">QA Environment</span></div>
-
-                <div class="flow-row">
-                    <div class="flow-node">
-                        <div class="node-icon">&#9654;&#65039;</div>
-                        <div class="node-label">Test Executor</div>
-                        <div class="node-sub">SIT / Functional</div>
-                    </div>
-                    <div class="flow-node">
-                        <div class="node-icon">&#128027;</div>
-                        <div class="node-label">Defect Reporter</div>
-                        <div class="node-sub">Bug filing</div>
-                    </div>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <div class="flow-row">
-                    <span class="flow-gate">&#128682; GATE 1: QA &rarr; Staging</span>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <!-- Staging Environment -->
-                <div class="flow-row"><span class="flow-env-label">Staging / Full Copy</span></div>
-
-                <div class="flow-row">
-                    <div class="flow-node">
-                        <div class="node-icon">&#128218;</div>
-                        <div class="node-label">Regression Manager</div>
-                        <div class="node-sub">Suite curation</div>
-                    </div>
-                    <div class="flow-node">
-                        <div class="node-icon">&#9889;</div>
-                        <div class="node-label">Perf Test Engineer</div>
-                        <div class="node-sub">Load / Stress / Soak</div>
-                    </div>
-                    <div class="flow-node">
-                        <div class="node-icon">&#128274;</div>
-                        <div class="node-label">Security Test Engineer</div>
-                        <div class="node-sub">OWASP / Auth / Injection</div>
-                    </div>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <div class="flow-row">
-                    <div class="flow-node">
-                        <div class="node-icon">&#9654;&#65039;</div>
-                        <div class="node-label">Test Executor</div>
-                        <div class="node-sub">Regression / E2E / UAT</div>
-                    </div>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <div class="flow-row">
-                    <span class="flow-gate">&#128682; GATE 2: Staging &rarr; PROD</span>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <!-- PROD Environment -->
-                <div class="flow-row"><span class="flow-env-label">Production</span></div>
-
-                <div class="flow-row">
-                    <div class="flow-node">
-                        <div class="node-icon">&#9654;&#65039;</div>
-                        <div class="node-label">Test Executor</div>
-                        <div class="node-sub">Sanity Tests</div>
-                    </div>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <div class="flow-row">
-                    <span class="flow-gate">&#128682; GATE 3: PROD Sanity Pass/Fail</span>
-                </div>
-
-                <div class="flow-connector">&#8595;</div>
-
-                <div class="flow-row">
-                    <div class="flow-node highlight">
-                        <div class="node-icon">&#128202;</div>
-                        <div class="node-label">Test Monitor</div>
-                        <div class="node-sub">Dashboards + Trends + Feedback Loop</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Roadmap Section -->
     <section class="section roadmap-section" id="roadmap">
         <div class="section-inner">
@@ -2600,9 +3314,9 @@
                     <div class="roadmap-desc">Foundation agent. Reads Jira tickets via REST API, analyzes requirements, creates rich ADF Confluence pages with 6-section analysis. Adds Jira comments, labels, and approval workflow.</div>
                 </div>
 
-                <div class="roadmap-item">
+                <div class="roadmap-item done">
                     <div class="roadmap-dot"></div>
-                    <div class="roadmap-phase">Phase 2</div>
+                    <div class="roadmap-phase">Phase 2 &mdash; Complete</div>
                     <div class="roadmap-title">Test Designer</div>
                     <div class="roadmap-desc">Generate structured test cases tagged by level (SIT, Regression, E2E, UAT, Sanity) from Test Analyst output. BDD scenarios, test data, and edge case catalogs.</div>
                 </div>
@@ -2792,6 +3506,17 @@
             <!-- Effort Saving Breakdown Table -->
             <div class="savings-table-wrapper reveal">
                 <h3>Detailed Task-Level Breakdown</h3>
+                <div class="table-filter-bar">
+                    <label for="roleFilter">Filter by Role:</label>
+                    <select id="roleFilter" class="role-filter-select" onchange="filterTableByRole(this.value)">
+                        <option value="all">All Roles</option>
+                        <option value="Functional Test Analyst">Functional Test Analyst</option>
+                        <option value="Automation QE">Automation QE</option>
+                        <option value="Performance Test Engineer">Performance Test Engineer</option>
+                        <option value="Security Test Engineer">Security Test Engineer</option>
+                        <option value="QE Lead">QE Lead</option>
+                    </select>
+                </div>
                 <div class="savings-table-scroll">
                     <table class="savings-table" id="savingsTable">
                         <thead>
@@ -2898,6 +3623,86 @@
         </div>
     </section>
 
+    <!-- Best Practices Section -->
+    <section class="section" id="practices">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <div class="section-label">Design Principles</div>
+                <h2 class="section-title">Best Practices We Follow</h2>
+                <p class="section-subtitle">11 core principles that guide every design decision in our agentic architecture.</p>
+            </div>
+
+            <div class="practices-grid reveal">
+                <div class="practice-card">
+                    <div class="practice-number">01</div>
+                    <div class="practice-icon">&#128101;</div>
+                    <h3>Human-in-the-Loop</h3>
+                    <p>Agents propose, humans approve at critical gates. Autonomy increases as trust is established. No fully autonomous decisions on production releases.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">02</div>
+                    <div class="practice-icon">&#128196;</div>
+                    <h3>Structured Handoffs</h3>
+                    <p>Agents communicate via well-defined JSON schemas, not free-form text. This ensures data integrity, parseability, and reliable downstream consumption.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">03</div>
+                    <div class="practice-icon">&#128640;</div>
+                    <h3>Incremental Adoption</h3>
+                    <p>Start with Analyst + Designer (lowest risk, highest value). Add agents progressively. Each phase delivers standalone value before the next begins.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">04</div>
+                    <div class="practice-icon">&#128260;</div>
+                    <h3>Feedback Loops</h3>
+                    <p>Test Monitor feeds insights back to Test Analyst. Defect patterns inform risk assessment. Each cycle gets smarter than the last.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">05</div>
+                    <div class="practice-icon">&#128295;</div>
+                    <h3>Framework Agnostic</h3>
+                    <p>Automation agents adapt to the project's existing test framework (Playwright, Cypress, pytest) rather than imposing a new one.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">06</div>
+                    <div class="practice-icon">&#128279;</div>
+                    <h3>Full Traceability</h3>
+                    <p>Every artifact links back to the originating requirement. Every defect links to the test that found it. Complete audit trail from story to production.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">07</div>
+                    <div class="practice-icon">&#128721;</div>
+                    <h3>Fail Safe, Not Fail Silent</h3>
+                    <p>When an agent is uncertain, it flags for human review rather than guessing. Ambiguities are surfaced, never assumed away.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">08</div>
+                    <div class="practice-icon">&#128176;</div>
+                    <h3>Cost Conscious</h3>
+                    <p>Use the right model for the right task. Opus for complex analysis, Sonnet for high-volume generation. Token budgets per agent prevent runaway costs.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">09</div>
+                    <div class="practice-icon">&#127760;</div>
+                    <h3>Environment Aware</h3>
+                    <p>Every agent understands which environment it's operating in and adjusts behavior accordingly. QA bugs differ from PROD escalations.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">10</div>
+                    <div class="practice-icon">&#11013;&#65039;</div>
+                    <h3>Shift-Left Quality</h3>
+                    <p>Push quality activities earlier in the pipeline. Unit tests in DEV, test analysis at story creation. Find bugs where they're cheapest to fix.</p>
+                </div>
+                <div class="practice-card">
+                    <div class="practice-number">11</div>
+                    <div class="practice-icon">&#128737;</div>
+                    <h3>NFR as First-Class Citizens</h3>
+                    <p>Performance and Security testing have dedicated agents and formal gates. They're not afterthoughts &mdash; they're required for staging sign-off.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <img src="pandora_logo_102224_rgb.webp" alt="Pandora" class="footer-logo">
@@ -2982,6 +3787,14 @@
 
         heroObserver.observe(document.querySelector('.hero-stats'));
 
+        // ===== MOBILE NAV TOGGLE =====
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobileNav');
+            const btn = document.getElementById('hamburgerBtn');
+            nav.classList.toggle('mobile-open');
+            btn.classList.toggle('open');
+        }
+
         // ===== SMOOTH SCROLL FOR NAV LINKS =====
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', (e) => {
@@ -2990,6 +3803,9 @@
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
+                // Close mobile nav after clicking a link
+                document.getElementById('mobileNav').classList.remove('mobile-open');
+                document.getElementById('hamburgerBtn').classList.remove('open');
             });
         });
 
@@ -3196,6 +4012,18 @@
                 setTimeout(initEffortCharts, 100);
             }
         };
+
+        // ===== ROLE FILTER =====
+        function filterTableByRole(role) {
+            const rows = document.querySelectorAll('#savingsTable tbody tr');
+            rows.forEach(row => {
+                if (role === 'all' || row.children[0].textContent.trim() === role) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
 
         // ===== SORTABLE TABLE =====
         document.querySelectorAll('#savingsTable thead th').forEach((th, colIdx) => {
